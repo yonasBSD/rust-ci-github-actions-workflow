@@ -1,6 +1,6 @@
 # Rust CI with GitHub Actions
 
-![example workflow](https://github.com/BamPeers/rust-ci-github-actions-workflow/actions/workflows/check-and-lint.yaml/badge.svg) ![example workflow](https://github.com/BamPeers/rust-ci-github-actions-workflow/actions/workflows/test.yaml/badge.svg) [![codecov](https://codecov.io/gh/BamPeers/rust-ci-github-actions-workflow/branch/main/graph/badge.svg?token=SLIHSUWHT2)](https://codecov.io/gh/BamPeers/rust-ci-github-actions-workflow)
+![Linting workflow](https://github.com/yonas-forks/test2/actions/workflows/lint.yaml/badge.svg) ![testing workflow](https://github.com/yonas-forks/test2/actions/workflows/test.yaml/badge.svg) ![packaging](https://github.com/yonas-forks/test2/actions/workflows/release-packaging.yaml/badge.svg) ![coverage](https://github.com/yonas-forks/test2/actions/workflows/coverage.yaml/badge.svg)   [![codecov](https://codecov.io/gh/yonas-forks/test2/branch/main/graph/badge.svg?token=SLIHSUWHT2)](https://codecov.io/gh/yonas-forks/test2)
 
 
 ## Table of Contents
@@ -17,7 +17,7 @@ The CI process is separated into 3 workflows: Check and Lint, Test, and Release 
 
 All jobs run on `ubuntu-latest`, and are run in parallel.
 
-All jobs use [actions/checkout@v2](https://github.com/actions/checkout) and [actions-rs/toolchain@v1](https://github.com/actions-rs/toolchain).
+All jobs use [actions/checkout](https://github.com/actions/checkout) and [actions-rs/toolchain](https://github.com/actions-rs/toolchain).
 
 <a name="check-and-lint"></a>
 

@@ -1,4 +1,4 @@
-use rust_ci_github_actions_workflow::*;
+use test2::*;
 
 fn main() {
     println!("3 time 5 is {}", multiply(3, 5));
