@@ -34,8 +34,8 @@ fn main() -> Result<(), anyhow::Error> {
         Some(("ci", _)) => tasks::ci(),
         Some(("docs", _)) => tasks::docs(),
         Some(("powerset", _)) => tasks::powerset(),
-        Some(("bloat-deps", _)) => tasks::bloat_deps(),
-        Some(("bloat-time", _)) => tasks::bloat_time(),
+        Some(("bloat-deps", _)) => tasks::bloat_deps("backpack"),
+        Some(("bloat-time", _)) => tasks::bloat_time("backpack"),
         _ => unreachable!("unreachable branch"),
     };
     res
