@@ -1,18 +1,31 @@
 # Rust CI with GitHub Actions
 
-![Linting workflow](https://github.com/yonas-forks/test2/actions/workflows/lint.yaml/badge.svg) ![testing workflow](https://github.com/yonas-forks/test2/actions/workflows/test.yaml/badge.svg) ![packaging](https://github.com/yonas-forks/test2/actions/workflows/release-packaging.yaml/badge.svg) ![coverage](https://github.com/yonas-forks/test2/actions/workflows/coverage.yaml/badge.svg)   [![codecov](https://codecov.io/gh/yonas-forks/test2/branch/main/graph/badge.svg?token=SLIHSUWHT2)](https://codecov.io/gh/yonas-forks/test2)
+![Linting workflow](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/lint.yaml/badge.svg)
+![testing workflow](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/test.yaml/badge.svg)
+![packaging](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/release-packaging.yaml/badge.svg)
+![coverage](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/coverage.yaml/badge.svg)
+<!--[![codecov](https://codecov.io/gh/yonasBSD/rust-ci-github-actions-workflow/branch/main/graph/badge.svg?token=SLIHSUWHT2)](https://codecov.io/gh/yonasBSD/rust-ci-github-actions-workflow)-->
+<!--[![ghcr.io](https://img.shields.io/badge/ghcr.io-download-blue)](https://github.com/yonasBSD/rust-ci-github-actions-workflow/pkgs/container/rust-ci-github-actions-workflow)-->
+<!--[![Docker Pulls](https://img.shields.io/docker/pulls/rust-ci-github-actions-workflow/example.svg)](https://hub.docker.com/r/rust-ci-github-actions-workflow/example)-->
+<!--[![Quay.io](https://img.shields.io/badge/Quay.io-download-blue)](https://quay.io/repository/rust-ci-github-actions-workflow/example)-->
+
+[![Dependency Status](https://deps.rs/repo/github/yonasBSD/rust-ci-github-actions-workflow/status.svg)](https://deps.rs/repo/github/yonasBSD/rust-ci-github-actions-workflow)
+[![GitHub Release](https://img.shields.io/github/release/yonasBSD/rust-ci-github-actions-workflow.svg)](https://github.com/yonasBSD/rust-ci-github-actions-workflow/releases/latest)
+[![License](https://img.shields.io/github/license/yonasBSD/rust-ci-github-actions-workflow.svg)](https://github.com/yonasBSD/rust-ci-github-actions-workflow/blob/main/LICENSE.txt)
+[![Matrix Chat](https://img.shields.io/matrix/vaultwarden:matrix.org.svg?logo=matrix)](https://matrix.to/#/#vaultwarden:matrix.org)
 
 
 ## Table of Contents
+
 1. [Workflows](#workflows)
     - [Check and Lint (check-and-lint.yaml)](#check-and-lint)
     - [Test with Code Coverage (test.yaml)](#test-with-code-coverage)
     - [Release Packaging (release-packaging.yaml)](#release-packaging)
 2. [How to Use](#how-to-use)
-3. [License](#license)
 
 
 ## Workflows
+
 The CI process is separated into 3 workflows: Check and Lint, Test, and Release Packaging.
 
 All jobs run on `ubuntu-latest`, and are run in parallel.
@@ -21,38 +34,47 @@ All jobs use [actions/checkout](https://github.com/actions/checkout) and [action
 
 <a name="check-and-lint"></a>
 
+
 ### Check and Lint (check-and-lint.yaml)
+
 This workflow checks for compiler errors and code style inconsistencies.
+
 It runs on pull requests and main branch push.
 
 
-#### Check job
+#### 📋 Check job
+
 This job runs `cargo check` on the stable toolchain.
 
 It checks if there are compiler errors.
 
 
-#### Rustfmt job
+#### 📋 Rustfmt job
+
 This job runs [rustfmt](https://github.com/rust-lang/rustfmt) with the `--check` option through `cargo fmt` on the stable toolchain.
 
 By default, it checks inconsistencies with the [Rust style guide](https://github.com/rust-lang-nursery/fmt-rfcs/blob/master/guide/guide.md).
 You can add a `rustfmt.toml` or `.rustfmt.toml` to configure the style.
 
-#### Clippy job
+
+#### 📋 Clippy job
+
 This job runs [clippy](https://github.com/rust-lang/rust-clippy) on the stable toolchain through [actions-rs/clippy-check@v1](https://github.com/actions-rs/clippy-check).
+
 You can add a `clippy.toml` or `.clippy.toml` to configure the style.
 - The action outputs result (**Clippy Output** added to a random workflow), and
 - For pull requests, it adds annotations on the diff.
 
-<a name="test-with-code-coverage"></a>
 
 ### Test with Code Coverage (test.yaml)
+
 This workflow run tests, outputs test results, publishes code coverage results on [CodeCov](https://codecov.io/).
 Publishing test results and code coverage data is in one job to avoid running the tests twice.
 It runs on pull requests and main branch push.
 
 
-#### Test job
+#### 📋 Test job
+
 This job:
 1. Caches dependencies,
 2. Runs tests and generate test results and code coverage data,
@@ -89,18 +111,22 @@ Steps:
     - For pull requests, the actions adds a comment containing the code coverage report.
     - For private repositories, add your token from CodeCov repository setting on GitHub Secrets and uncomment the line: `token: ${{ secrets.CODECOV_TOKEN }}`.
 
-<a name="release-packaging"></a>
 
 ### Release Packaging (release-packaging.yaml)
+
 This workflow builds the package in release mode and uploads resulting file as a GitHub artifact.
 It runs on main branch push.
 
-#### Release Packaging job
+
+#### 📋 Release Packaging job
+
 This job builds the project in release mode and uploads the binary as an artifact through [actions/upload-artifact@v2](https://github.com/actions/upload-artifact).
 
 The binary `target/release/${{ env.PROJECT_NAME_UNDERSCORE }}` is uploaded as `${{ env.PROJECT_NAME_UNDERSCORE }}`.
 
+
 ## How to Use
+
 1. Replace the value of `PROJECT_NAME_UNDERSCORE` with your project name (replace hyphens(-) as underscores(_)).
 
 2. Customize when to call the workflows (like branch names)
@@ -114,6 +140,3 @@ Notes:
 - `secrets.GITHUB_TOKEN` is needed by some actions to create GitHub checks & annotations. it is added automatically by GitHub.
 - uses cache for GitHub actions.
 - clippy html output and test result output are added to random workflows for a certain commit due to limitations in the GitHub Actions API.
-
-## License
-MIT
