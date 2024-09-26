@@ -1,4 +1,4 @@
-name: Check
+name: Linting
 
 on:
   workflow_call:
@@ -12,25 +12,7 @@ env:
   SCCACHE_GHA_ENABLED: "true"
   RUSTC_WRAPPER: "sccache"
 
-name: Linting
-
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: mozilla-actions/sccache-action@v0.0.5
-
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-      
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
 
   fmt:
     name: Rustfmt and treefmt
@@ -58,7 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+      - uses: mozilla-actions/sccache-action@v0.0.5
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
