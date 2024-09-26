@@ -1,9 +1,16 @@
+name: Check
+
 on:
+  workflow_call:
   pull_request:
   push:
     branches:
       - main
 
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
 
 name: Linting
 
@@ -13,7 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+      - uses: mozilla-actions/sccache-action@v0.0.5
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           profile: minimal
@@ -29,18 +37,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.5
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
-      - run: rustup component add rustfmt
-
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+          components: rustfmt
+      - run: cargo fmt --version
+      - run: cargo fmt --all --check
 
       - name: treefmt
         run: |
