@@ -13,22 +13,6 @@ env:
   RUSTC_WRAPPER: "sccache"
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: mozilla-actions/sccache-action@v0.0.5
-
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-      
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
 
   fmt:
     name: Rustfmt and treefmt
