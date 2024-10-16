@@ -14,4 +14,25 @@ path = "src/main.rs"
 coverage = []
 
 [dependencies]
+#argh = "*"
+clap = "*"
 clap_allgen = "*"
+color-eyre = "*"
+dialoguer = "*"
+dirs = "*"
+#figment = { version = "*", features = ["json", "toml", "yaml", "env"] }
+config-rs = "*"
+log = "*"
+insta = "*"
+pretty_env_logger = "*"
+requestty = "*"
+snafu = "*"
+template-eyre = "*"
+tracing = "*"
+tracing-tree = "*"
+trycmd = "*"
+
+[profile.dev.package]
+insta.opt-level = 3
+similar.opt-level = 3
+backtrace.opt-level = 3

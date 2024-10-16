@@ -16,6 +16,7 @@ fn main() -> Result<(), anyhow::Error> {
                     .takes_value(false),
             ),
         )
+        .subcommand(Command::new("test"))
         .subcommand(Command::new("vars"))
         .subcommand(Command::new("ci"))
         .subcommand(Command::new("powerset"))
@@ -26,6 +27,10 @@ fn main() -> Result<(), anyhow::Error> {
 
     let root = ops::root_dir();
     let res = match matches.subcommand() {
+        Some(("test", _)) => {
+            tasks::test();
+            Command.run("cargo insta review")
+        }
         Some(("coverage", sm)) => tasks::coverage(sm.is_present("dev")),
         Some(("vars", _)) => {
             println!("root: {root:?}");
