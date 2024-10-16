@@ -1,10 +1,11 @@
+use test2::*;
+
 use color_eyre::eyre::Result;
 use console::{Emoji, Style};
 use dirs;
 use eyre::{Report, WrapErr};
 use std::{fs, io, path::PathBuf};
 use template_eyre::Hook;
-use test2::*;
 use tracing::{debug, error, info, instrument, span, warn, Level};
 use tracing_subscriber::{layer::SubscriberExt, registry::Registry};
 use tracing_tree::HierarchicalLayer;
@@ -12,14 +13,6 @@ use tracing_tree::HierarchicalLayer;
 extern crate pretty_env_logger;
 #[macro_use]
 extern crate log;
-
-use config::{Config, File};
-use notify::{Event, RecommendedWatcher, RecursiveMode, Watcher};
-use std::collections::HashMap;
-use std::path::Path;
-use std::sync::mpsc::channel;
-use std::sync::RwLock;
-use std::time::Duration;
 
 fn main() {
     Hook::new(include_str!("errors.hbs"))
