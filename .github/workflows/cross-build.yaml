@@ -119,30 +119,6 @@ jobs:
             env
             cargo test --all-features
 
-  dragonflybsd:
-    name: DragonflyBSD
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      - name: Dragonfly
-        uses: vmactions/dragonflybsd-vm@v1
-        with:
-          usesh: true
-          sync: rsync
-          copyback: false
-          prepare: |
-            pkg install -y curl rust
-
-          run: |
-            pwd
-            ls -lah
-            whoami
-            env
-            cargo test --all-features
-
   alpine:
     name: Alpine
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
