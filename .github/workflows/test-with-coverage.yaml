@@ -6,6 +6,8 @@ on:
 
 name: Test with Code Coverage
 
+permissions: read-all
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -45,6 +47,12 @@ jobs:
         with:
           tool: grcov,cargo-llvm-cov
 
+      - name: Run tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cargo test --all-features
+
       - name: Generate test result and coverage report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -61,10 +69,23 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: results.xml
 
+      - name: Run xtask coverage
+        uses: actions-rs/cargo@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          command: xtask
+          args: coverage
+
       #- name: Upload Coverage Report
       #  uses: codecov/codecov-action@v5
       #  with:
       #    verbose: true
       #    token: ${{ secrets.CODECOV_TOKEN }}
       #    files: ${{ github.workspace }}/codecov.json
+ 
+      #  - name: Upload to codecov.io
+      #    uses: codecov/codecov-action@v5
+      #    with:
+      #      files: coverage/*.lcov
       #    fail_ci_if_error: true
