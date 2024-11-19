@@ -47,7 +47,6 @@ jobs:
       - name: FreeBSD
         uses: vmactions/freebsd-vm@v1
         with:
-          envs: 'MYTOKEN MYTOKEN2'
           usesh: true
           sync: rsync
           copyback: false
@@ -77,7 +76,6 @@ jobs:
       - name: OpenBSD
         uses: vmactions/openbsd-vm@v1
         with:
-          envs: 'MYTOKEN MYTOKEN2'
           usesh: true
           sync: rsync
           copyback: false
@@ -107,24 +105,18 @@ jobs:
       - name: NetBSD
         uses: vmactions/netbsd-vm@v1
         with:
-          envs: 'MYTOKEN MYTOKEN2'
           usesh: true
           sync: rsync
           copyback: false
           prepare: |
             /usr/sbin/pkg_add pkgin
-            pkgin install curl rust
+            pkgin -y install curl rust
 
           run: |
             pwd
             ls -lah
             whoami
             env
-            freebsd-version
-            sysctl hw.model
-            sysctl hw.ncpu
-            sysctl hw.physmem
-            sysctl hw.usermem
             cargo test --all-features
 
   dragonflybsd:
@@ -138,23 +130,17 @@ jobs:
       - name: Dragonfly
         uses: vmactions/dragonflybsd-vm@v1
         with:
-          envs: 'MYTOKEN MYTOKEN2'
           usesh: true
           sync: rsync
           copyback: false
           prepare: |
-            pkg install -y curl rust-nightly
+            pkg install -y curl rust
 
           run: |
             pwd
             ls -lah
             whoami
             env
-            freebsd-version
-            sysctl hw.model
-            sysctl hw.ncpu
-            sysctl hw.physmem
-            sysctl hw.usermem
             cargo test --all-features
 
   alpine:
@@ -165,7 +151,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
-      - name: Alpine Linux
+      - name: Setup
         uses: jirutka/setup-alpine@v1
         with:
           branch: edge
@@ -174,6 +160,7 @@ jobs:
         run: |
           apk add cargo
           cargo test --all-features
+        shell: alpine.sh --root {0}
 
   arch:
     name: Arch
@@ -183,7 +170,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
-      - name: Arch Linux
+      - name: Setup
         uses: RangHo/setup-arch@main
         with:
           packages: "rust"
