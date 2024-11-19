@@ -13,13 +13,21 @@ name: Cross Build
 
 jobs:
   test:
-    name: Test Platforms
+    name: ${{ matrix.os.name }}
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os:
+          - arch: ubuntu-latest
+            name: Ubuntu
+
+          - arch: macos-latest
+            name: Mac OS X
+
+          - arch: windows-latest
+            name: Windows
         rust: [stable]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os.arch }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
