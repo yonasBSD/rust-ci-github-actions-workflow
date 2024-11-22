@@ -2,6 +2,15 @@
 
 ## Deployments
 
+### Deployment Stack
+- OpenStack: bare metal provisioning
+- Terraform: virtual machine cloud provisioning
+- Orchestration: Kubernetes pods
+- Services: Docker containers
+- Binaries: per OS packages and repositories
+- Source code: Gitea / Forgejo
+- PKI
+
 ### Docker
 
 Add Dockerfile and docker-compose.yaml.
@@ -36,7 +45,7 @@ Add helm chart.
   - arm v6, v7, v8
   - risc v
 
-### Encryption
+### Encryption / PKI
 - Sign all assets
   - minisign [ ed25519 ]
   - GPG [ ed25519 ]
