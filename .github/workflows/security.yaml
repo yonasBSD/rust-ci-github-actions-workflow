@@ -1,0 +1,24 @@
+on:
+  # Trigger analysis when pushing to your main branches, and when creating a pull request.
+  push:
+    branches:
+      - main
+      - 'releases/**'
+  pull_request:
+      types: [opened, synchronize, reopened]
+
+name: SonarQube Security
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # Disabling shallow clones is recommended for improving the relevancy of reporting
+        fetch-depth: 0
+
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v4.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
