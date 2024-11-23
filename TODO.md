@@ -48,5 +48,6 @@ Add helm chart.
 
 ### Encryption / PKI
 - Sign all assets
+  - sigstore
   - minisign [ ed25519 ]
   - GPG [ ed25519 ]
