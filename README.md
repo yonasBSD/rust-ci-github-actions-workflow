@@ -4,6 +4,10 @@
 ![testing workflow](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/test-with-coverage.yaml/badge.svg)
 ![packaging](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/release-packaging.yaml/badge.svg)
 ![cross-build](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/cross-build.yaml/badge.svg)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
 <!--[![codecov](https://codecov.io/gh/yonasBSD/rust-ci-github-actions-workflow/branch/main/graph/badge.svg?token=SLIHSUWHT2)](https://codecov.io/gh/yonasBSD/rust-ci-github-actions-workflow)-->
 <!--[![ghcr.io](https://img.shields.io/badge/ghcr.io-download-blue)](https://github.com/yonasBSD/rust-ci-github-actions-workflow/pkgs/container/rust-ci-github-actions-workflow)-->
 <!--[![Docker Pulls](https://img.shields.io/docker/pulls/rust-ci-github-actions-workflow/example.svg)](https://hub.docker.com/r/rust-ci-github-actions-workflow/example)-->
