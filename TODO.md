@@ -23,6 +23,7 @@ Add helm chart.
 - Flatpack
 - AppImage
 - Ubuntu Snap
+- Nix
 
 ### Architecture
 - OS
@@ -30,7 +31,7 @@ Add helm chart.
     - Ubuntu / Debian 
     - Alpine
     - OpenSUSE
-    - RedHat / Rocky
+    - Fedora / Rocky
     - Arch
     - Slackware
     - Gentoo
