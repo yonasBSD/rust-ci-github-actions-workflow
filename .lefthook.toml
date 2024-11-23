@@ -1,0 +1,36 @@
+[pre-commit]
+parallel = true
+
+[pre-commit.commands.lint]
+run = "just --timestamp lint"
+glob = "*.go"
+stage_fixed = true
+
+[pre-commit.commands.format]
+run = "just --timestamp format"
+glob = "*.go"
+stage_fixed = true
+
+[pre-commit.commands.build]
+run = "just --timestamp build"
+glob = "*.go"
+
+[pre-commit.commands.audit]
+run = "just --timestamp audit"
+
+[pre-commit.commands.cog-check]
+run = "cog check"
+
+#[commit-msg.commands.cog-verify]
+#run = "cog verify -i '{1}'"
+
+# Build commit message
+[prepare-commit-msg.commands.commitzen]
+interactive = true
+run = "just --timestamp prepare-commit-msg {1}"
+[commit-msg.commands.commitzen.env]
+LEFTHOOK = 0
+
+# Validate commit messages
+[commit-msg.commands.commitzen]
+run = "just --timestamp lint-commit-msg {1}"

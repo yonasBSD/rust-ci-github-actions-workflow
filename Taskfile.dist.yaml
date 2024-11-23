@@ -1,0 +1,225 @@
+version: '3'
+
+env:
+  #ENV: dev
+  #ENV: testing
+  #ENV: staging
+  ENV: production
+
+dotenv: ['.env', '{{ .taskEnv }}']
+
+vars:
+  project: Hello World
+  homepage: https://example.com
+  forums: https://example.com/forums
+  chat: https://chat.example.com
+  ircserver: irc.libera.chat
+  ircroom: help
+  homepage: https://example.com
+  author: Acme Inc.
+  version: 0.0.1
+  build:
+    sh: git rev-parse --short HEAD
+  date:
+    sh: date -Ins
+  license: MIT
+  user:
+    sh: id -u -n
+  hostname:
+    sh: hostname
+  taskEnv: .task.env
+
+tasks:
+
+  default:
+    cmds:
+      - task: hello
+
+  hello:
+    desc: "Display project welcome message"
+    summary: |
+      Display project information and welcome message
+
+      This is space for a longer description.
+    cmds:
+      - cmd: echo " Hello {{ .fullname }}!"
+        silent: true
+      - cmd: echo -e "\nRun `just help` to get started."
+        silent: true
+      - cmd: just help
+        silent: true
+
+  build:
+    desc: Build
+    deps: ['build:templates']
+    cmds:
+      - cargo build --release
+      - defer: { task: cleanup }
+
+  build:templates:
+    desc: "Compile templates"
+    sources:
+      - '**/*.j2'
+    cmds:
+      - for: sources
+        cmd: minijinja-cli --strict --format toml --output $(basename {{ .ITEM }} .j2) {{ .ITEM }} variables.toml
+
+  test:
+    desc: Run tests
+    deps: ['test:code', 'test:scripts', 'test:apis']
+
+  test:code:
+    desc: Test code
+    cmds:
+      - task: run:pipelight:tests
+
+  test:scripts:
+    desc: Test using scripts
+    cmds:
+      - task: run:venom
+
+  test:apis:
+    desc: Test APIs
+    cmds:
+      - task: run:hurl
+
+  run:pipelight:tests:
+    desc: Run pipelight tests
+    cmds:
+      - pipelight run tests --attach
+      - pipelight logs -vv
+
+  run:venom:
+    desc: Run venom scripted tests
+    cmds:
+      - if [ ! -f variables.yaml ]; then echo '---' > variables.yaml ; fi
+      - venom run --output-dir results --html-report --var-from-file variables.yaml **/*.yaml
+      - mv results/test_results.html results/index.html
+      - cat results/test_results_venom.json | jq
+      - echo www --port 4001 results
+
+  run:hurl:
+    desc: Run hurl API tests
+    cmds:
+      - hurl --test --parallel --glob *hurl.yaml --report-html results --report-json results
+      - cat results/report.json | jq
+      - echo www --port 4002 results
+
+  clean:
+    desc: Clean up
+    cmds:
+      - echo Cleaning...
+
+  lint:
+    desc: Lint code
+    deps: ['run:lychee']
+
+  run:lychee:
+    desc: Run lychee link checker
+    sources:
+      - '**/*.md'
+    cmds:
+      - for: sources
+        cmd: if ! test "$PWD" != "${PWD%node_modules*}" ; echo lychee {{ .ITEM }} ; fi
+
+  format:
+    desc: Format code
+    deps: ['run:treefmt']
+
+  run:treefmt:
+    desc: Run treefmt
+    cmds:
+      - treefmt
+    # for v2: treefmt --on-unmatched=info
+
+  docs:
+    desc: Build documentation pages
+    deps: ['run:mdbook', 'run:zola']
+
+  run:mdbook:
+    desc: Build mdbook technical notes
+    generates:
+      - './docs/technical/mdbook'
+    cmds:
+      - echo Building mdbook...
+      - if [ ! -d mdbook ]; then mkdir -p docs/technical ; cd docs/technical ; mdbook init mdbook --title "Technical Documentation" --ignore git; fi
+      - cd docs/technical/mdbook ; mkdir -p ../../../build/output/docs/technical/mdbook ; mdbook build --dest-dir ../../../build/output/docs/technical/mdbook
+      - 'echo Start server: mdbook serve --dest-dir ../../../build/output/docs/technical/mdbook --port 3001'
+
+  #run:docusourus:
+    #desc: Build docusourus user guides
+    #vars:
+    #GIT_OWNER:
+        #sh: git remote get-url origin | grep owner
+    #GIT_PROJECT:
+        #sh: git remote get-url origin | grep owner
+    #generates:
+      #- './docs/user-guides/docusourus'
+    #cmds:
+      #- echo Building docusourus...
+      #- if [ ! -d docusourus ]; then npx --yes create-docusaurus@latest --typescript --git-strategy shallow --package-manager yarn docusourus classic ; fi
+      #- cd docusourus
+      #- 'sd --fixed-strings "facebook/docusourus" "{{.GIT_OWNER}}/{{.GIT_PROJECT}}" docusaurus.config.ts'
+      #- 'sd "organizationName: .facebook." "{{.GIT_OWNER}}" docusaurus.config.ts'
+      #- yarn build
+      #- 'echo Start server: www --port 3002 build'
+
+  run:zola:
+    desc: Build zola blog and release notes
+    generates:
+      - './docs/blog/zola'
+    cmds:
+      - echo Building zola...
+      - if [ ! -d zola ]; then mkdir -p docs/blog ; cd docs/blog ; zola init zola ; fi
+      - cd docs/blog/zola ; mkdir -p ../../../build/output/docs/blog/zola ; zola build --force --base-url https://localhost:3004 --output-dir ../../../build/output/docs/blog/zola
+      - 'echo Start server: www --port 3004 ../../../build/output/docs/blog/zola'
+
+  audit:
+    desc: Perform a security audit
+    deps: ['audit:secrets', 'audit:vulnerabilities', 'audit:code-quality']
+
+  audit:secrets:
+    desc: Scan for secrets
+    cmds:
+      - task: run:trufflehog
+
+  run:trufflehog:
+    desc: Run trufflehog
+    summary: |
+      Scan for:
+
+      - 700 credential detectors that support active verification against their respective APIs.
+      - GitHub, GitLab, Docker, filesystems, S3, GCS, Circle CI and Travis CI.
+      - Instantly verify private keys against millions of GitHub users and billions of TLS certificates
+      - Scan binaries and documents
+
+    cmds:
+      - trufflehog git file://. --since-commit HEAD --only-verified --no-update --fail
+
+  audit:vulnerabilities:
+    desc: Scan for vulnerabilities
+    cmds:
+      - task: run:trivy
+
+  run:trivy:
+    desc: Run trivy
+    summary: |
+      Scan for:
+
+      OS packages and software dependencies in use (SBOM)
+      Known vulnerabilities (CVEs)
+      IaC issues and misconfigurations
+      Sensitive information and secrets
+      Software licenses
+    cmds:
+      - trivy fs --scanners vuln,secret,misconfig --exit-code 183 .
+
+  audit:code-quality:
+    desc: Look for code smells
+    cmds:
+      - task: run:sonarcube
+
+  run:sonarcube:
+    desc: Run sonarcube
+    cmds:
+      - echo sonarcube run

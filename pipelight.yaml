@@ -1,0 +1,29 @@
+pipelines:
+  - name: build
+
+    triggers:
+      - actions:
+          - pre-commit
+
+    steps:
+      - name: Build
+        commands:
+          - task --verbose build
+
+  - name: tests
+
+    steps:
+      - name: Run unit tests
+        commands:
+          - task --verbose test
+
+  - name: docs
+
+    triggers:
+      - actions:
+          - pre-commit
+
+    steps:
+      - name: Build documentation pages
+        commands:
+          - task --verbose docs
