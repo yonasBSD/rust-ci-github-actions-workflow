@@ -212,7 +212,7 @@ tasks:
       Sensitive information and secrets
       Software licenses
     cmds:
-      - trivy fs --scanners vuln,secret,misconfig --exit-code 183 .
+      - trivy --config trivy.yaml fs .
 
   audit:code-quality:
     desc: Look for code smells

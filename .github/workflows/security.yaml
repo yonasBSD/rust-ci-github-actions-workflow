@@ -28,25 +28,47 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-        sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin
-        curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+    - name: Run TruffleHog
+      uses: trufflesecurity/trufflehog@main
 
-    - name: Run Trufflehog
-      run: task audit:secrets
+   #- name: Install dependencies
+   #  run: |
+   #    curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+   #    sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin
+   #    curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+
+   #- name: Run Trufflehog
+   #  run: task audit:secrets
 
   vulnerabilities:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-        sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin/
-        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
-
     - name: Run Trivy
-      run: task audit:vulnerabilities
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        trivy-config: trivy.yaml
+
+   #- uses: sigstore/cosign-installer@main
+   #
+   #- name: Install dependencies
+   #  run: |
+   #    curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+   #    sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin/
+   #    #curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+   #    export trivy_ver=$(curl -sL https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r ".tag_name" | cut -d'v' -f2)
+   #    wget "https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb"
+   #    wget "https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb.pem"
+   #    wget "https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb.sig"
+   #    cosign verify-blob trivy_${trivy_ver}_Linux-64bit.deb \
+   #      --certificate trivy_${trivy_ver}_Linux-64bit.deb.pem \
+   #      --signature trivy_${trivy_ver}_Linux-64bit.deb.sig \
+   #      --certificate-identity-regexp 'https://github\.com/aquasecurity/trivy/\.github/workflows/.+' \
+   #      --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+   #      sudo dpkg -i trivy_${trivy_ver}_Linux-64bit.deb
+
+   #- name: Run Trivy
+   #  run: task audit:vulnerabilities
