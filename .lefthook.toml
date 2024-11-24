@@ -3,17 +3,17 @@ parallel = true
 
 [pre-commit.commands.lint]
 run = "just --timestamp lint"
-glob = "*.go"
+glob = "*.rs"
 stage_fixed = true
 
 [pre-commit.commands.format]
 run = "just --timestamp format"
-glob = "*.go"
+glob = "*.rs"
 stage_fixed = true
 
 [pre-commit.commands.build]
 run = "just --timestamp build"
-glob = "*.go"
+glob = "*.rs"
 
 [pre-commit.commands.audit]
 run = "just --timestamp audit"
