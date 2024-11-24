@@ -69,7 +69,17 @@ jobs:
           sync: rsync
           copyback: false
           prepare: |
-            pkg install -y curl rust-nightly
+            mkdir -p /usr/local/etc/pkg/repos
+            cat << EOF > /usr/local/etc/pkg/repos/FreeBSD.conf
+FreeBSD: {
+  url: "http://pkg.freebsd.org/${ABI}/latest",
+  mirror_type: "none",
+  signature_type: "fingerprints",
+  fingerprints: "/usr/share/keys/pkg",
+  enabled: yes
+}
+EOF
+            pkg update -f ; pkg install -y curl rust-nightly
 
           run: |
             pwd
