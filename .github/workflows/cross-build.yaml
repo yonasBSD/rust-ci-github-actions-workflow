@@ -1,3 +1,5 @@
+name: Cross Build
+
 on:
   pull_request:
   push:
@@ -8,8 +10,6 @@ on:
     branches: [main]
     types:
       - completed
-
-name: Cross Build
 
 jobs:
   test:
@@ -50,7 +50,7 @@ jobs:
         run: cargo test --all-features
 
   freebsd:
-    name: FreBSD
+    name: FreeBSD
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
@@ -71,14 +71,14 @@ jobs:
           prepare: |
             mkdir -p /usr/local/etc/pkg/repos
             cat << EOF > /usr/local/etc/pkg/repos/FreeBSD.conf
-FreeBSD: {
-  url: "http://pkg.freebsd.org/${ABI}/latest",
-  mirror_type: "none",
-  signature_type: "fingerprints",
-  fingerprints: "/usr/share/keys/pkg",
-  enabled: yes
-}
-EOF
+            FreeBSD: {
+              url: "http://pkg.freebsd.org/\${ABI}/latest",
+              mirror_type: "none",
+              signature_type: "fingerprints",
+              fingerprints: "/usr/share/keys/pkg",
+              enabled: yes
+            }
+            EOF
             pkg update -f ; pkg install -y curl rust-nightly
 
           run: |

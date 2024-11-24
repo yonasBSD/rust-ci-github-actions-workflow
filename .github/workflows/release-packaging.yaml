@@ -1,9 +1,9 @@
+name: Release Packaging
+
 on:
   push:
     tags:
       - 'v*'
-
-name: Release Packaging
 
 permissions:
   contents: write
