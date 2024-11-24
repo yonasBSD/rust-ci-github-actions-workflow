@@ -14,5 +14,5 @@ Cargo.lock
 # Pipelight logs
 .pipelight/
 
-# Documentation builds
-build/output/
+# Build output
+build/

@@ -6,7 +6,8 @@ build:
   just clean
 
 test:
-  task test
+  pipelight run tests --attach
+  pipelight logs -vv
 
 lint:
   task lint

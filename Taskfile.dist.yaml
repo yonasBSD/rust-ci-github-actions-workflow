@@ -71,7 +71,14 @@ tasks:
   test:code:
     desc: Test code
     cmds:
-      - task: run:pipelight:tests
+      - task: test:code:rust
+
+  test:code:rust:
+    desc: "Test Rust code"
+    sources:
+      - '**/*.rs'
+    cmds:
+      - cargo test --all-features
 
   test:scripts:
     desc: Test using scripts
@@ -83,27 +90,39 @@ tasks:
     cmds:
       - task: run:hurl
 
-  run:pipelight:tests:
-    desc: Run pipelight tests
-    cmds:
-      - pipelight run tests --attach
-      - pipelight logs -vv
-
   run:venom:
     desc: Run venom scripted tests
+    sources:
+      - '**/*.venom.yaml'
+    run: always
     cmds:
-      - if [ ! -f variables.yaml ]; then echo '---' > variables.yaml ; fi
-      - venom run --output-dir results --html-report --var-from-file variables.yaml **/*.yaml
-      - mv results/test_results.html results/index.html
-      - cat results/test_results_venom.json | jq
-      - echo www --port 4001 results
+      - for: sources
+        cmd: task run:venom:test -- {{ .ITEM }}
+
+  run:venom:test:
+    desc: Run a venom test
+    cmds:
+      - if [ ! -f build/tests/venom/variables.yaml ]; then echo '---' > build/tests/venom/variables.yaml ; fi
+      - venom run --output-dir build/tests/venom/results --html-report --var-from-file build/tests/venom/variables.yaml {{ .CLI_ARGS }}
+      - mv build/tests/venom/results/test_results.html build/tests/venom/results/index.html
+      - cat build/tests/venom/results/test_results_venom.json | jq
+      - echo www --port 4001 build/tests/venom/results
 
   run:hurl:
     desc: Run hurl API tests
+    sources:
+      - '**/*.hurl.yaml'
+    run: always
     cmds:
-      - hurl --test --parallel --glob *hurl.yaml --report-html results --report-json results
-      - cat results/report.json | jq
-      - echo www --port 4002 results
+      - for: sources
+        cmd: task run:hurl:test -- {{ .ITEM }}
+
+  run:hurl:test:
+    desc: Run a hurl test
+    cmds:
+      - hurl --test --parallel --glob {{ .CLI_ARGS }} --report-html build/tests/hurl --report-json build/tests/hurl
+      - cat build/tests/hurl/report.json | jq
+      - echo www --port 4002 build/tests/hurl
 
   clean:
     desc: Clean up
@@ -143,8 +162,8 @@ tasks:
     cmds:
       - echo Building mdbook...
       - if [ ! -d mdbook ]; then mkdir -p docs/technical ; cd docs/technical ; mdbook init mdbook --title "Technical Documentation" --ignore git; fi
-      - cd docs/technical/mdbook ; mkdir -p ../../../build/output/docs/technical/mdbook ; mdbook build --dest-dir ../../../build/output/docs/technical/mdbook
-      - 'echo Start server: mdbook serve --dest-dir ../../../build/output/docs/technical/mdbook --port 3001'
+      - cd docs/technical/mdbook ; mkdir -p ../../../build/docs/technical/mdbook ; mdbook build --dest-dir ../../../build/docs/technical/mdbook
+      - 'echo Start server: mdbook serve --dest-dir ../../../build/docs/technical/mdbook --port 3001'
 
   #run:docusourus:
     #desc: Build docusourus user guides
@@ -171,8 +190,8 @@ tasks:
     cmds:
       - echo Building zola...
       - if [ ! -d zola ]; then mkdir -p docs/blog ; cd docs/blog ; zola init zola ; fi
-      - cd docs/blog/zola ; mkdir -p ../../../build/output/docs/blog/zola ; zola build --force --base-url https://localhost:3004 --output-dir ../../../build/output/docs/blog/zola
-      - 'echo Start server: www --port 3004 ../../../build/output/docs/blog/zola'
+      - cd docs/blog/zola ; mkdir -p ../../../build/docs/blog/zola ; zola build --force --base-url https://localhost:3004 --output-dir ../../../build/docs/blog/zola
+      - 'echo Start server: www --port 3004 ../../../build/docs/blog/zola'
 
   audit:
     desc: Perform a security audit

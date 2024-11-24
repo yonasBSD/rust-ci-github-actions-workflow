@@ -56,13 +56,18 @@ jobs:
         with:
           tool: grcov,cargo-llvm-cov
 
+      - name: Install dependencies
+        run: |
+          curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin/
+
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cargo test --all-features
+          task test
 
-      - name: Generate test result and coverage report
+      - name: Generate test results and coverage report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
