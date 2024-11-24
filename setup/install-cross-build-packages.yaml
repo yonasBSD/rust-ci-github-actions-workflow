@@ -1,0 +1,19 @@
+---
+actions:
+  - action: file.copy
+    where: os.distribution == "freebsd"
+    from: FreeBSD/FreeBSD.conf
+    to: /usr/local/etc/pkg/repos/FreeBSD.conf
+    privileged: true
+
+  - action: packages.install
+    variants:
+      - where: os.distribution == "freebsd"
+        list:
+          - rust-nightly
+      - where: os.distribution == "openbsd" || os.distribution == "netbsd" || os.distribution == "arch"
+        list:
+          - rust
+      - where: os.distribution == "alpine"
+        list:
+          - cargo

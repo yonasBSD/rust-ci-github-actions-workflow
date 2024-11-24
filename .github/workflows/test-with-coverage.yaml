@@ -58,8 +58,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d && sudo mv bin/task /usr/local/bin/
+          curl -fsSL https://get.comtrya.dev | sh
+          comtrya -v -d setup apply -m install-task-packages
+          comtrya -v -d setup apply -m install-test-packages
 
       - name: Run tests
         env:
@@ -71,7 +72,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl --proto '=https' --tlsv1.3 -sSf https://raw.githubusercontent.com/yonasBSD/rust-ci-github-actions-workflow/refs/heads/main/install.sh | sh -s -- --to /usr/local/bin
           cargo clean
           cargo test $CARGO_OPTIONS -- -Z unstable-options --format json | cargo2junit > results.xml;
           cargo llvm-cov --all-features --workspace --codecov --output-path ./codecov.json

@@ -1,0 +1,11 @@
+---
+actions:
+  - action: file.download
+    from: https://raw.githubusercontent.com/yonasBSD/cargo2junit/refs/heads/main/install.sh
+    to: cargo2junit-install.sh
+
+  - action: command.run
+    command: sh
+    privileged: true
+    args:
+      - sh cargo2junit-install.sh --to /usr/local/bin

@@ -1,0 +1,16 @@
+---
+actions:
+  - action: file.download
+    from: https://just.systems/install.sh
+    to: just-install.sh
+
+  - action: file.download
+    from: https://taskfile.dev/install.sh
+    to: task-install.sh
+
+  - action: command.run
+    command: sh
+    privileged: true
+    args:
+      - cat just-install.sh | bash -s -- --to /usr/local/bin
+      - sh task-install.sh -d && mv bin/task /usr/local/bin
