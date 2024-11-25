@@ -104,7 +104,7 @@ jobs:
           sync: rsync
           copyback: false
           prepare: |
-            pkg_add curl rust
+            pkg_add rust
 
           run: |
             pwd
@@ -139,7 +139,7 @@ jobs:
           copyback: false
           prepare: |
             /usr/sbin/pkg_add pkgin
-            pkgin -y install curl rust
+            pkgin -y install rust
 
           run: |
             pwd
