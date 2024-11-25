@@ -13,4 +13,4 @@ actions:
     privileged: true
     args:
       - bash just-install.sh --to /usr/local/bin
-      - sh task-install.sh -d && mv bin/task /usr/local/bin
+      - sh task-install.sh -d -b /usr/local/bin
