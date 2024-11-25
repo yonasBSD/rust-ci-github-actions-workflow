@@ -1,0 +1,39 @@
+---
+actions:
+  - action: file.download
+    from: https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh
+    to: trivy-install.sh
+
+  - action: command.run
+    command: sh
+    privileged: true
+    args:
+      - sh trivy-install.sh -b /usr/local/bin
+
+  #echo trivy_ver=$(curl -sL https://api.github.com/repos/aquasecurity/trivy/releases/latest | jq -r ".tag_name" | cut -d'v' -f2) > .env
+  #- action: file.download
+  #  from: https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb
+  #  to: trivy_${trivy_ver}_Linux-64bit.deb
+
+  #- action: file.download
+  #  from: https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb.pem
+  #  to: trivy_${trivy_ver}_Linux-64bit.deb.pem
+
+  #- actions: file.download
+  #  from: https://github.com/aquasecurity/trivy/releases/download/v${trivy_ver}/trivy_${trivy_ver}_Linux-64bit.deb.sig
+  #  to: trivy_${trivy_ver}_Linux-64bit.deb.sig
+
+  #- action: command.run
+  #  command: sh
+  #  args:
+  #    - . .env && cosign verify-blob trivy_${trivy_ver}_Linux-64bit.deb \
+  #        --certificate trivy_${trivy_ver}_Linux-64bit.deb.pem \
+  #        --signature trivy_${trivy_ver}_Linux-64bit.deb.sig \
+  #        --certificate-identity-regexp 'https://github\.com/aquasecurity/trivy/\.github/workflows/.+' \
+  #        --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+
+  #- action: command.run
+  #  command: sh
+  #  privileged: true
+  #  args:
+  #    - . .env && dpkg -i trivy_${trivy_ver}_Linux-64bit.deb
