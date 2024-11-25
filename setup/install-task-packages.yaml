@@ -12,5 +12,5 @@ actions:
     command: sh
     privileged: true
     args:
-      - cat just-install.sh | bash -s -- --to /usr/local/bin
+      - bash just-install.sh --to /usr/local/bin
       - sh task-install.sh -d && mv bin/task /usr/local/bin
