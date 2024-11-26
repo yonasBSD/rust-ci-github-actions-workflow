@@ -53,7 +53,7 @@ tasks:
     desc: Build
     deps: ['build:templates']
     cmds:
-      - cargo build --release
+      - cargo auditable build --release
       - defer: { task: cleanup }
 
   build:templates:
