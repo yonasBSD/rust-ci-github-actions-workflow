@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
-      - uses: yonasBSD/toolkit@8ccab9fec998771a7448506f082bc8f6292900e7 # main
+      - uses: yonasBSD/toolkit@50c71bf90111fe3dfa8cca91c30668869e985d88 # main
 
       - name: Release Build
         run: cargo auditable build --release
