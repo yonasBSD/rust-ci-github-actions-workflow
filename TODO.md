@@ -43,6 +43,7 @@ Add helm chart.
   - Windows
 - Arch
   - amd64
+  - musl
   - arm v6, v7, v8
   - risc v
 
