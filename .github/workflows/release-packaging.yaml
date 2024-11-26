@@ -22,10 +22,14 @@ jobs:
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
-      - uses: yonasBSD/toolkit@50c71bf90111fe3dfa8cca91c30668869e985d88 # main
+        with:
+          toolchain: stable
 
       - name: Release Build
-        run: cargo auditable build --release
+        uses: yonasBSD/toolkit@4e361819e59fa6d66e9901bad4f0cee6d3b38b57 # main
+        with:
+          run: |
+            cargo auditable build --release
 
       - name: Set env
         run: echo "NFPM_VERSION=$(curl -sL https://api.github.com/repos/goreleaser/nfpm/releases/latest | jq -r ".tag_name" | cut -d'v' -f2)" >> $GITHUB_ENV
