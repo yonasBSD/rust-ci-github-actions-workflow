@@ -28,6 +28,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
         with:
+          toolchain: stable
           components: rustfmt
       - run: cargo fmt --version
       - run: cargo fmt --all --check
@@ -73,6 +74,9 @@ jobs:
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: mozilla-actions/sccache-action@9e326ebed976843c9932b3aa0e021c6f50310eb4 # v0.0.6
+
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
+        with:
+          toolchain: stable
 
       - uses: EmbarkStudios/cargo-deny-action@v1

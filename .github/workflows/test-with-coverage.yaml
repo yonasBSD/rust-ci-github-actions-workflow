@@ -35,6 +35,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # nightly
         with:
+          toolchain: nightly
           components: llvm-tools-preview
 
       - name: Cache dependencies
