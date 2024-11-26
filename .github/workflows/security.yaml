@@ -30,10 +30,13 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: |
-        curl -fsSL https://get.comtrya.dev | sh
-        comtrya -v -d setup apply -m install-task-packages
-        comtrya -v -d setup apply -m install-secrets-packages
+      uses: yonasBSD/toolkit@main
+
+    #- name: Install dependencies
+    #  run: |
+    #    curl -fsSL https://get.comtrya.dev | sh
+    #    comtrya -v -d setup apply -m install-task-packages
+    #    comtrya -v -d setup apply -m install-secrets-packages
 
     - name: Run Trufflehog
       run: task audit:secrets
@@ -42,13 +45,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: sigstore/cosign-installer@main
 
     - name: Install dependencies
-      run: |
-        curl -fsSL https://get.comtrya.dev | sh
-        comtrya -v -d setup apply -m install-task-packages
-        comtrya -v -d setup apply -m install-vulnerabilities-packages
+      uses: yonasBSD/toolkit@main
+
+    #- name: Install dependencies
+    #  run: |
+    #    curl -fsSL https://get.comtrya.dev | sh
+    #    comtrya -v -d setup apply -m install-task-packages
+    #    comtrya -v -d setup apply -m install-vulnerabilities-packages
 
     - name: Run Trivy
       run: task audit:vulnerabilities
