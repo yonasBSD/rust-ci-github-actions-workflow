@@ -6,7 +6,6 @@ deny = [
     { crate = "openssl", use-instead = "rustls" },
     { crate = "openssl-sys", use-instead = "rustls" },
     "libssh2-sys",
-    { crate = "cmake", use-instead = "cc" },
     { crate = "windows", reason = "bloated and unnecessary", use-instead = "ideally inline bindings, practically, windows-sys" },
 ]
 skip = [
@@ -31,10 +30,10 @@ allow = [
     "BSD-3-Clause",
     "ISC",
     "Unicode-3.0",
+    "OpenSSL",
 ]
 exceptions = [
     # Use exceptions for these as they only have a single user
     { allow = ["Zlib"], crate = "tinyvec" },
     { allow = ["Unicode-DFS-2016"], crate = "unicode-ident" },
-    { allow = ["OpenSSL"], crate = "ring" },
 ]
