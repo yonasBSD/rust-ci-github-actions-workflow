@@ -4,9 +4,9 @@ actions:
     where: os.distribution == "freebsd"
     from: FreeBSD/FreeBSD.conf
     to: /usr/local/etc/pkg/repos/FreeBSD.conf
-    privileged: true
+    #privileged: true
 
-  - action: packages.install
+  - action: package.install
     variants:
       - where: os.distribution == "freebsd"
         list:

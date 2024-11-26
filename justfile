@@ -1,5 +1,5 @@
 build:
-  comtrya -d setup -v apply
+  comtrya -d setup apply -m build
   pipelight trigger --flag pre-commit --attach
   pipelight logs -vv
   just test
