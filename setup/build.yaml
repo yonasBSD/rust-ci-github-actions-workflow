@@ -1,0 +1,6 @@
+---
+actions:
+  - action: command.run
+    command: echo
+    args:
+    - Ready to build.
