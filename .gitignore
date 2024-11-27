@@ -16,3 +16,4 @@ Cargo.lock
 
 # Build output
 build/
+coverage/
