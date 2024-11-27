@@ -26,6 +26,7 @@ jobs:
             api.scorecard.dev:443
             fulcio.sigstore.dev:443
             github.com:443
+            uploads.github.com:443
             oss-fuzz-build-logs.storage.googleapis.com:443
             rekor.sigstore.dev:443
             tuf-repo-cdn.sigstore.dev:443
@@ -68,7 +69,6 @@ jobs:
            for pkg in deb apk archlinux rpm ipk; do
               nfpm package -p $pkg
            done
-           mv target/release/${{ env.PROJECT_NAME_UNDERSCORE }} ${{ env.PROJECT_NAME_UNDERSCORE }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
@@ -76,7 +76,6 @@ jobs:
         with:
           name: ${{ env.PROJECT_NAME_UNDERSCORE }}
           path: |
-            ${{ env.PROJECT_NAME_UNDERSCORE }}
             *.deb
             *.apk
             *.ipk
@@ -87,7 +86,6 @@ jobs:
         uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974 # v2.1.0
         with:
           files: |
-            ${{ env.PROJECT_NAME_UNDERSCORE }}
             *.deb
             *.apk
             *.ipk
