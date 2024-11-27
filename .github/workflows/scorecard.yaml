@@ -1,4 +1,4 @@
-name: Scorecard supply-chain security
+name: Scorecard Audit
 on:
   # For Branch-Protection check. Only the default branch is supported. See
   # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
@@ -15,7 +15,7 @@ permissions: read-all
 
 jobs:
   analysis:
-    name: Scorecard analysis
+    name: Supply Chain Analysis
     runs-on: ubuntu-latest
     permissions:
       # Needed to upload the results to code-scanning dashboard.
@@ -27,7 +27,19 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
         with:
-          egress-policy: audit
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.deps.dev:443
+            api.github.com:443
+            api.osv.dev:443
+            api.scorecard.dev:443
+            fulcio.sigstore.dev:443
+            github.com:443
+            oss-fuzz-build-logs.storage.googleapis.com:443
+            rekor.sigstore.dev:443
+            tuf-repo-cdn.sigstore.dev:443
+            www.bestpractices.dev:443
 
       - name: "Checkout code"
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

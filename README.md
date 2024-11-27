@@ -1,10 +1,13 @@
 # Rust CI with GitHub Actions
 
-![Linting workflow](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/lint.yaml/badge.svg)
-![testing workflow](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/test-with-coverage.yaml/badge.svg)
-![packaging](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/release-packaging.yaml/badge.svg)
-![cross-build](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/cross-build.yaml/badge.svg)
+![Licenses](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/licenses.yaml/badge.svg)
+![Linting](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/lint.yaml/badge.svg)
+![Testing](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/test-with-coverage.yaml/badge.svg)
+![Packaging](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/release-packaging.yaml/badge.svg)
+![Cross-Build](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/cross-build.yaml/badge.svg)
 
+![Security Audit](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/security.yaml/badge.svg)
+![Scorecard Audit](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/scorecard.yaml/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=yonasBSD_rust-ci-github-actions-workflow&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=yonasBSD_rust-ci-github-actions-workflow)
