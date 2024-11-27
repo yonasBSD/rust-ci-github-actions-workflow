@@ -89,4 +89,5 @@ jobs:
             echo "::group::List of licenses"
             cargo-license --authors --do-not-bundle
             echo "::endgroup::"
-            printf '::notice title=licenses::%s' "$(cargo-license --authors --do-not-bundle)"
+            echo ### Licenses > $GITHUB_STEP_SUMMARY
+            cargo-license --authors --do-not-bundle >> $GITHUB_STEP_SUMMARY

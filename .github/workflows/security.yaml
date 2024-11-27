@@ -81,4 +81,5 @@ jobs:
         uses: yonasBSD/toolkit@4e361819e59fa6d66e9901bad4f0cee6d3b38b57 # main
         with:
           run: |
-            cargo deny check advisories
+            echo ### Advisories > $GITHUB_STEP_SUMMARY
+            cargo deny check advisories >> $GITHUB_STEP_SUMMARY
