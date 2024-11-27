@@ -1,0 +1,35 @@
+// Services are the main abstraction of River
+services {
+    // This is a service named "Example1"
+    Example1 {
+        // Listeners are the "downstream" interfaces that we listen to. We can name as many
+        // as we'd like, at least one is required
+        listeners {
+            "0.0.0.0:8080"
+            "0.0.0.0:4443" cert-path="./assets/test.crt" key-path="./assets/test.key" offer-h2=true
+        }
+
+        // Apply Rate limiting to this service
+        //
+        // Note that ALL rules are applied, and a request must receive a token from all
+        // applicable rules.
+        //
+        // For example:
+        //
+        // A request to URI `/index.html` from IP 1.2.3.4 will only need to get a token from
+        // the `source-ip` rule.
+        //
+        // A request to URI `/static/style.css` from IP 1.2.3.4 will need to get a token from
+        // BOTH the `source-ip` rule (from the `1.2.3.4` bucket), AND the `specific-uri` rule
+        // (from the `/static/style.css` bucket)
+        rate-limiting {
+            // This rate limiting rule is based on the source IP address
+            //
+            // * Up to the last 4000 IP addresses will be remembered
+            // * Each IP address can make a burst of 10 requests
+            // * The bucket for each IP will refill at a rate of 1 request per 10 milliseconds
+            rule kind="source-ip" \
+                max-buckets=4000 tokens-per-bucket=10 refill-qty=1 refill-rate-ms=10
+        }
+    }
+}

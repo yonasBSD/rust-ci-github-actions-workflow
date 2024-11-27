@@ -1,0 +1,6 @@
+[submodule "docs/landing-page/themes/juice"]
+	path = docs/landing-page/themes/juice
+	url = https://github.com/huhu/juice
+[submodule "docs/blog/themes/zola-hacker"]
+	path = docs/blog/themes/zola-hacker
+	url = https://github.com/en9inerd/zola-hacker

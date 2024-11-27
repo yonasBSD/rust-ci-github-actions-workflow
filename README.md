@@ -16,6 +16,7 @@
 <!--[![Docker Pulls](https://img.shields.io/docker/pulls/rust-ci-github-actions-workflow/example.svg)](https://hub.docker.com/r/rust-ci-github-actions-workflow/example)-->
 <!--[![Quay.io](https://img.shields.io/badge/Quay.io-download-blue)](https://quay.io/repository/rust-ci-github-actions-workflow/example)-->
 
+![Docs](https://github.com/yonasBSD/rust-ci-github-actions-workflow/actions/workflows/documentation.yaml/badge.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/yonasBSD/rust-ci-github-actions-workflow)
 [![Dependency Status](https://deps.rs/repo/github/yonasBSD/rust-ci-github-actions-workflow/status.svg)](https://deps.rs/repo/github/yonasBSD/rust-ci-github-actions-workflow)
 [![GitHub Release](https://img.shields.io/github/release/yonasBSD/rust-ci-github-actions-workflow.svg)](https://github.com/yonasBSD/rust-ci-github-actions-workflow/releases/latest)

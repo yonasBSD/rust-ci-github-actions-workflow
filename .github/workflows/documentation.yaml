@@ -1,0 +1,96 @@
+name: docs
+
+on:
+  workflow_call:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  blog:
+    name: Blog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Run build and check links
+        uses: zolacti/on@check
+        with:
+          root: docs/blog
+
+  landing-page:
+    name: Landing Page
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Run build and check links
+        uses: zolacti/on@check
+        with:
+          root: docs/landing-page
+
+  technical:
+    name: Technical Docs
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/landing-page
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: drmingdrmer/mdbook-full@main
+
+      - name: Run build
+        run: mdbook build
+
+      - name: Run check links
+        run: |
+          echo '## TODO' >> $GITHUB_STEP_SUMMARY
+          echo '- check links' >> $GITHUB_STEP_SUMMARY
+
+  user-guides:
+    name: User Guides
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs/user-guide
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@v4
+
+      - name: Run build
+        run: |
+          sudo npm install --global yarn
+          yarn build
+
+      - name: Run check links
+        run: |
+          echo '## TODO' >> $GITHUB_STEP_SUMMARY
+          echo '- check links' >> $GITHUB_STEP_SUMMARY

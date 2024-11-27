@@ -1,8 +1,16 @@
-# TODO
+# Roadmap
 
-## Deployments
+Place your roadmaps here (plans, todo lists, etc).
 
-### Deployment Stack
+
+## TODO
+
+### Benchmarking
+- use https://github.com/wfxr/rlt for HTTP load testing
+
+### Deployments
+
+#### Deployment Stack
 - OpenStack: bare metal provisioning
 - Terraform: virtual machine cloud provisioning
 - Orchestration: Kubernetes pods
@@ -11,21 +19,21 @@
 - Source code: Gitea / Forgejo
 - PKI
 
-### Docker
+#### Docker
 
 Add Dockerfile and docker-compose.yaml.
 
-### Helm / Kubernetes
+#### Helm / Kubernetes
 
 Add helm chart.
 
-### Packages and Binaries
+#### Packages and Binaries
 - Flatpack
 - AppImage
 - Ubuntu Snap
 - Nix
 
-### Architecture
+#### Architecture
 - OS
   - Linux
     - Ubuntu / Debian 
@@ -46,7 +54,7 @@ Add helm chart.
   - arm v6, v7, v8
   - risc v
 
-### Encryption / PKI
+#### Encryption / PKI
 - Sign all assets
   - sigstore
   - minisign [ ed25519 ]

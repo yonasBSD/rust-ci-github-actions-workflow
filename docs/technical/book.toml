@@ -1,0 +1,6 @@
+[book]
+authors = ["Acme Inc."]
+language = "en"
+multilingual = false
+src = "src"
+title = "Technical Docs"
