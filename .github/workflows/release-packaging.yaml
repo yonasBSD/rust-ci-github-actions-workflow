@@ -8,11 +8,12 @@ on:
 permissions:
   contents: write
 
+env:
+  PROJECT_NAME_UNDERSCORE: test2
+
 jobs:
   release:
-    name: Release Packaging
-    env:
-      PROJECT_NAME_UNDERSCORE: test2
+    name: Linux
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
@@ -103,3 +104,43 @@ jobs:
     #         --repo="$GITHUB_REPOSITORY" \
     #         --title="${tag#v}" \
     #         --generate-notes
+
+  macos:
+    name: Mac
+    runs-on: macos-latest
+    permissions:
+      contents: write
+      packages: write
+    needs: [release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          default: true
+      - run: cargo build --release
+      - run: |
+          mv target/release/${{ env.PROJECT_NAME_UNDERSCORE }} ${{ env.PROJECT_NAME_UNDERSCORE }}-macos-64bit.dmg
+          gh release upload "${{ github.ref_name }}" ${{ env.PROJECT_NAME_UNDERSCORE }}-macos-64bit.dmg --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    permissions:
+      contents: write
+      packages: write
+    needs: [release]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          default: true
+      - run: cargo build --release
+      - run: |
+          mv target/release/${{ env.PROJECT_NAME_UNDERSCORE }}.exe ${{ env.PROJECT_NAME_UNDERSCORE }}-windows-64bit.exe
+          gh release upload "${{ github.ref_name }}" ${{ env.PROJECT_NAME_UNDERSCORE }}-windows-64bit.exe --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
