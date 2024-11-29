@@ -19,3 +19,6 @@ demonstrate = "*"
 async-attributes = "*"
 async-std = "*"
 pretty_assertions = "*"
+
+[dependencies]
+human-panic = "2.0.2"
