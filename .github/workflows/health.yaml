@@ -1,4 +1,4 @@
-name: Linting
+name: Health
 
 on:
   workflow_call:
@@ -12,8 +12,8 @@ env:
 
 jobs:
 
-  fmt:
-    name: Rustfmt and treefmt
+  outdated:
+    name: Outdated Crates
     runs-on: ubuntu-latest
     env:
       SCCACHE_GHA_ENABLED: "true"
@@ -44,20 +44,15 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
         with:
-          toolchain: stable
-          components: rustfmt
-      - run: cargo fmt --version
-      - run: cargo fmt --all --check
+          toolchain: nightly
 
-      - name: treefmt
+      - name: Run cargo-outdated
         run: |
-          curl -s https://api.github.com/repos/numtide/treefmt/tags | jq -r '.[0].name' > .ver
-          curl -sSLo treefmt.tgz https://github.com/numtide/treefmt/releases/download/$(cat .ver)/treefmt_$(cat .ver | cut -d'v' -f2)_linux_amd64.tar.gz
-          tar -xvf treefmt.tgz
-          ./treefmt
+          echo ### Outdated Dependencies >> $GITHUB_STEP_SUMMARY
+          cargo outdated >> $GITHUB_STEP_SUMMARY
 
-  clippy:
-    name: Clippy
+  deps:
+    name: Unused dependencies
     runs-on: ubuntu-latest
     env:
       SCCACHE_GHA_ENABLED: "true"
@@ -87,13 +82,5 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: mozilla-actions/sccache-action@9e326ebed976843c9932b3aa0e021c6f50310eb4 # v0.0.6
 
-      - uses: dtolnay/rust-toolchain@315e265cd78dad1e1dcf3a5074f6d6c47029d5aa # stable
-        with:
-          toolchain: stable
-          components: clippy
-
-      - uses: actions-rs/clippy-check@b5b5f21f4797c02da247df37026fcd0a5024aa4d # v1.0.7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features
-          name: Clippy Output
+      - name: Check dependencies
+        uses: bnjbvr/cargo-machete@main
