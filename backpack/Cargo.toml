@@ -14,4 +14,8 @@ path = "src/main.rs"
 [features]
 coverage = []
 
-[dependencies]
+[dev-dependencies]
+demonstrate = "*"
+async-attributes = "*"
+async-std = "*"
+pretty_assertions = "*"
