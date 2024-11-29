@@ -22,3 +22,4 @@ pretty_assertions = "*"
 
 [dependencies]
 human-panic = "2.0.2"
+update-informer = { version = "1.1.0", features = ["github"] }
