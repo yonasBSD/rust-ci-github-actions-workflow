@@ -84,11 +84,11 @@ jobs:
           egress-policy: audit
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: blah/scdoc@main
+      - uses: yonasBSD/toolkit@6647c8140a48bf1951edddd590006919066b626a # main
 
       - name: Run build
         run: |
-          for doc in $(find *.scd); dockerfile
+          for doc in $(find *.scd); do
             scdoc < $doc > $(basename $doc .scd).1
           done
 
