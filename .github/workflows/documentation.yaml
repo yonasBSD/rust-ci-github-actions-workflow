@@ -89,7 +89,7 @@ jobs:
       - name: Run build
         run: |
           for doc in $(find *.scd); do
-            scdoc < $doc > $(basename $doc .scd).1
+            scdoc < $doc > $(basename $doc .scd)
           done
 
       - name: Run check links
