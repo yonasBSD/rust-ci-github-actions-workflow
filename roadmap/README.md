@@ -66,5 +66,6 @@ Add helm chart.
   - sigstore
   - minisign [ ed25519 ]
   - GPG [ ed25519 ]
+  - SLSA
 - Checksums
   - BLAKE-3
