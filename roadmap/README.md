@@ -5,6 +5,13 @@ Place your roadmaps here (plans, todo lists, etc).
 
 ## TODO
 
+### [Scorecard](https://scorecard.dev/viewer/?uri=github.com/yonasBSD/rust-ci-github-actions-workflow)
+- signed releases
+  - minisign (.minisig)
+  - GPG (.asc)
+  - SigStore (.sigstore)
+  - SLSA (.intoto.jsonl)
+
 ### Benchmarking
 - use https://github.com/wfxr/rlt for HTTP load testing
 
