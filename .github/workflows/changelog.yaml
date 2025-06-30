@@ -55,7 +55,7 @@ jobs:
         run: sed -i '1,2d' CHANGES.md
 
       - name: Upload the changelog
-        uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5 # v1.14.0
+        uses: ncipollo/release-action@bcfe5470707e8832e12347755757cec0eb3c22af # v1.18.0
         with:
           # draft: true
           allowUpdates: true
