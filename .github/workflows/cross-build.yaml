@@ -319,7 +319,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup
-        uses: RangHo/setup-arch@e8cd607443653e6fb211e402d20a9cc75b0ad5f2 # main
+        uses: RangHo/setup-arch@19885eda0c0b0d1791e61e1d32f2552d42944b14 # main
         with:
           packages: "rust"
 
