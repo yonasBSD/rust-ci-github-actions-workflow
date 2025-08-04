@@ -43,7 +43,7 @@ jobs:
           toolchain: nightly
 
       - name: Run cargo-deny
-        uses: yonasBSD/toolkit@6647c8140a48bf1951edddd590006919066b626a # main
+        uses: yonasBSD/toolkit@03e3c9b7dbd443957fe1c96b6e2adb2deb953127 # main
         with:
           run: |
             cargo-deny check licenses bans
