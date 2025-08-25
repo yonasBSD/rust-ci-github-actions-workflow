@@ -57,7 +57,7 @@ jobs:
             packages.microsoft.com:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # master
@@ -105,7 +105,7 @@ jobs:
             pkg.freebsd.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: FreeBSD
         uses: vmactions/freebsd-vm@debf37ca7b7fa40e19c542ef7ba30d6054a706a4 # v1.1.5
@@ -173,7 +173,7 @@ jobs:
             www.google.com:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: OpenBSD
         uses: vmactions/openbsd-vm@0cfe06e734a0ea3a546fca7ebf200b984b94d58a # v1.1.4
@@ -226,7 +226,7 @@ jobs:
             cdn.NetBSD.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: NetBSD
         uses: vmactions/netbsd-vm@7c9086fdb4cc1aa814cda6e305390c2b966551a9 # v1.1.4
@@ -272,7 +272,7 @@ jobs:
             gitlab.alpinelinux.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Setup
         uses: jirutka/setup-alpine@092137b2b59839555e7432042a9533c64ed482a4 # v1
@@ -316,7 +316,7 @@ jobs:
             openpgpkey.archlinux.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Setup
         uses: RangHo/setup-arch@19885eda0c0b0d1791e61e1d32f2552d42944b14 # main
