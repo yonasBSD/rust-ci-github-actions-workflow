@@ -173,6 +173,23 @@ tasks:
       - cd docs/technical/mdbook ; mkdir -p ../../../build/docs/technical/mdbook ; mdbook build --dest-dir ../../../build/docs/technical/mdbook
       - 'echo Start server: mdbook serve --dest-dir ../../../build/docs/technical/mdbook --port 3001'
 
+  run:doctave:
+    desc: Build doctave user guides notes
+    generates:
+      - "./docs/user-guides/doctave"
+    vars:
+      build_dir: ../../../build/output/docs/user-guides/doctave
+    cmds:
+      - echo Building doctave...
+      - |
+        cat > doctave.yaml <<EOL
+        name: {{.project}}
+        version: {{.version}}
+        build_dir: {{.build_dir}}
+        EOL
+      - cd docs/user-guides/doctave ; doctave build --release
+      - 'echo Start server: doctave serve --port 3002'
+
   #run:docusourus:
     #desc: Build docusourus user guides
     #vars:
@@ -189,7 +206,7 @@ tasks:
       #- 'sd --fixed-strings "facebook/docusourus" "{{.GIT_OWNER}}/{{.GIT_PROJECT}}" docusaurus.config.ts'
       #- 'sd "organizationName: .facebook." "{{.GIT_OWNER}}" docusaurus.config.ts'
       #- yarn build
-      #- 'echo Start server: www --port 3002 build'
+      #- 'echo Start server: www --port 3003 build'
 
   run:zola:
     desc: Build zola blog and release notes
