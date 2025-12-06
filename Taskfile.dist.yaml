@@ -131,7 +131,7 @@ tasks:
 
   lint:
     desc: Lint code
-    deps: ['run:lychee', 'run:cargo-outdated']
+    deps: ['run:lychee', 'run:cargo-outdated', 'run:todos']
 
   run:lychee:
     desc: Run lychee link checker
@@ -148,6 +148,11 @@ tasks:
     cmds:
       - for: sources
         cmd: cd $(dirname {{ .ITEM }}) ; cargo outdated
+
+  run:todos:
+    desc: Run todo checker
+    cmds:
+      - todo-tree
 
   format:
     desc: Format code
