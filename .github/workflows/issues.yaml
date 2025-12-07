@@ -40,36 +40,12 @@ jobs:
             }
 
             const prefixMap = {
-              bug: /
-
-\[\s*bug\s*\]
-
-/ig,
-              feature: /
-
-\[\s*feature\s*\]
-
-/ig,
-              documentation: /
-
-\[\s*docs?\s*\]
-
-/ig,
-              security: /
-
-\[\s*security\s*\]
-
-/ig,
-              test: /
-
-\[\s*test\s*\]
-
-/ig,
-              support: /
-
-\[\s*support\s*\]
-
-/ig
+              bug: /\[\s*bug\s*\]/ig,
+              feature: /\[\s*feature\s*\]/ig,
+              documentation: /\[\s*docs?\s*\]/ig,
+              security: /\[\s*security\s*\]/ig,
+              test: /\[\s*test\s*\]/ig,
+              support: /\[\s*support\s*\]/ig
             };
 
             let matched = false;
