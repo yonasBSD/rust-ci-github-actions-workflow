@@ -1,0 +1,23 @@
+workflows:
+  - '.github/workflows/**/*'
+
+code:
+  - 'backpack/src/**/*'
+
+lib:
+  - 'backpack/**/lib/**/*'
+
+tests:
+  - 'backpack/**/tests/**/*'
+
+xtask:
+  - 'xtask/**/*'
+
+xtask/src:
+  - 'xtask/**/*'
+
+feature:
+  - head-branch: ['^feature', 'feature', '^feat', 'feat']
+
+release:
+  - base-branch: 'main'
