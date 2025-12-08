@@ -1,13 +1,12 @@
-name: Check PR
-
-permissions: {}
+name: PR Labels
 
 on:
-  pull_request_target: # zizmor: ignore[dangerous-triggers]
-    types:
-      - opened
-      - edited
-      - synchronize
+  pull_request: # zizmor: ignore[dangerous-triggers]
+    types: [opened, edited, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   pr:
@@ -17,7 +16,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/checkout-action@b13d20b7cda4e2f325ef19895128f7ff735c0b3d # v1.3.1
+      - uses: actions/checkout@v6
 
       - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
 
