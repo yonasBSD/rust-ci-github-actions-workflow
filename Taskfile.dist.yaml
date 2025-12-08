@@ -166,7 +166,23 @@ tasks:
 
   docs:
     desc: Build documentation pages
-    deps: ['run:mdbook', 'run:zola']
+    deps: ['run:rustdoc', 'run:doctave', 'run:mdbook', 'run:zola']
+
+  run:rustdoc:
+    desc: "Build rustdoc technical notes"
+    generates:
+      - "./docs/technical/rustdoc"
+    preconditions:
+      - test -f Cargo.toml
+    vars:
+      PKG_NAME:
+        sh: cargo get package.name
+      build_dir: ../../../build/output/docs/technical/rustdoc
+    cmds:
+      - echo Building rustdoc...
+      - cargo doc
+      - mkdir -p {{.build_dir}} ; mv target/doc/{{.PKG_NAME}}/* {{.build_dir}}/ ; rmdir target/doc/{{.PKG_NAME}} ; mv target/doc/* {{.build_dir}}/
+      - "echo Start server: www --root {{.build_dir}} --port 4000"
 
   run:mdbook:
     desc: Build mdbook technical notes
@@ -176,7 +192,7 @@ tasks:
       - echo Building mdbook...
       - if [ ! -d mdbook ]; then mkdir -p docs/technical ; cd docs/technical ; mdbook init mdbook --title "Technical Documentation" --ignore git; fi
       - cd docs/technical/mdbook ; mkdir -p ../../../build/docs/technical/mdbook ; mdbook build --dest-dir ../../../build/docs/technical/mdbook
-      - 'echo Start server: mdbook serve --dest-dir ../../../build/docs/technical/mdbook --port 3001'
+      - 'echo Start server: mdbook serve --dest-dir ../../../build/docs/technical/mdbook --port 4001'
 
   run:doctave:
     desc: Build doctave user guides notes
@@ -193,7 +209,7 @@ tasks:
         build_dir: {{.build_dir}}
         EOL
       - cd docs/user-guides/doctave ; doctave build --release
-      - 'echo Start server: doctave serve --port 3002'
+      - 'echo Start server: doctave serve --port 4002'
 
   #run:docusourus:
     #desc: Build docusourus user guides
@@ -211,7 +227,7 @@ tasks:
       #- 'sd --fixed-strings "facebook/docusourus" "{{.GIT_OWNER}}/{{.GIT_PROJECT}}" docusaurus.config.ts'
       #- 'sd "organizationName: .facebook." "{{.GIT_OWNER}}" docusaurus.config.ts'
       #- yarn build
-      #- 'echo Start server: www --port 3003 build'
+      #- 'echo Start server: www --port 4003 build'
 
   run:zola:
     desc: Build zola blog and release notes
@@ -220,8 +236,8 @@ tasks:
     cmds:
       - echo Building zola...
       - if [ ! -d zola ]; then mkdir -p docs/blog ; cd docs/blog ; zola init zola ; fi
-      - cd docs/blog/zola ; mkdir -p ../../../build/docs/blog/zola ; zola build --force --base-url https://localhost:3004 --output-dir ../../../build/docs/blog/zola
-      - 'echo Start server: www --port 3004 ../../../build/docs/blog/zola'
+      - cd docs/blog/zola ; mkdir -p ../../../build/docs/blog/zola ; zola build --force --base-url https://localhost:4004 --output-dir ../../../build/docs/blog/zola
+      - 'echo Start server: www --port 4004 ../../../build/docs/blog/zola'
 
   audit:
     desc: Perform a security audit
