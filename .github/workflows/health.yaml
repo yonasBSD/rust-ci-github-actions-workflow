@@ -49,6 +49,12 @@ jobs:
         with:
           toolchain: nightly
 
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+
+      - name: Install cargo-outdated
+        run: cargo binstall -y cargo-outdated
+
       - name: Run cargo-outdated
         run: |
           echo ### Outdated Dependencies >> $GITHUB_STEP_SUMMARY
