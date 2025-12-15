@@ -14,13 +14,13 @@ jobs:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         # Disabling shallow clones is recommended for improving the relevancy of reporting
         fetch-depth: 0
 
     - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@v5.3.1
+      uses: sonarsource/sonarqube-scan-action@v7.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -29,7 +29,7 @@ jobs:
     name: Secrets
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install dependencies
       run: |
@@ -44,7 +44,7 @@ jobs:
     name: Vulnerabilities
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - uses: sigstore/cosign-installer@main
 
     - name: Install dependencies
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
         with:
           disable-sudo: true
           egress-policy: block
