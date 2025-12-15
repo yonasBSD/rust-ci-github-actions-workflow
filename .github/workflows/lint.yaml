@@ -62,9 +62,6 @@ jobs:
           tar -xvf treefmt.tgz
           ./treefmt
 
-      - name: autofix.ci
-        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
-
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
