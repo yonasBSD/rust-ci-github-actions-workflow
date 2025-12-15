@@ -83,6 +83,8 @@ jobs:
             rekor.sigstore.dev:443
             tuf-repo-cdn.sigstore.dev:443
             www.bestpractices.dev:443
+            github-releases.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
             objects.githubusercontent.com:443
             static.rust-lang.org:443
             index.crates.io:443
