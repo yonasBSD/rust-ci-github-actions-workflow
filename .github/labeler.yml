@@ -1,0 +1,36 @@
+
+workflows:
+    - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+
+code:
+    - changed-files:
+    - any-glob-to-any-file:
+      - 'backpack/src/**/*'
+
+lib:
+    - changed-files:
+    - any-glob-to-any-file:
+      - 'backpack/**/lib/**/*'
+
+tests:
+    - changed-files:
+    - any-glob-to-any-file:
+      - 'backpack/**/tests/**/*'
+
+xtask:
+    - changed-files:
+    - any-glob-to-any-file:
+      - 'xtask/**/*'
+
+xtask/src:
+    - changed-files:
+    - any-glob-to-any-file:
+      - 'xtask/**/*'
+
+feature:
+  - head-branch: ['^feature', 'feature', '^feat', 'feat']
+
+release:
+  - base-branch: 'main'
