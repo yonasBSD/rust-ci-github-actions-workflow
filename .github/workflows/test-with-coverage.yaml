@@ -43,7 +43,7 @@ jobs:
             tuf-repo-cdn.sigstore.dev:443
             www.bestpractices.dev:443
             objects.githubusercontent.com:443
-            release-assets.githubusercontent.com
+            release-assets.githubusercontent.com:443
             static.rust-lang.org:443
             static.crates.io:443
             index.crates.io:443
