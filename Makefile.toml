@@ -1,0 +1,149 @@
+extend = { path = "Makefile.local.toml", optional = true }
+
+# Fetch from remote
+#[config]
+#load_script = "wget -O /home/myuser/common.toml companyserver.com/common.toml"
+#load_script = "git clone git@mygitserver:user/project.git /home/myuser/common"
+
+# profile based environment override
+[env.development]
+DEV = true
+
+[env.production]
+PROD = true
+
+[tasks.default]
+alias = "A"
+
+[tasks.A]
+dependencies = ["B", "C"]
+
+[tasks.B]
+dependencies = ["D"]
+
+[tasks.C]
+dependencies = ["D"]
+
+[tasks.D]
+description = "Runs hello world"
+category = "Build"
+script = "echo hello dev[$DEV] prod[$PROD]"
+
+[tasks.hello-world.linux]
+script = '''
+echo "Hello World From Linux"
+'''
+
+[tasks.hello-world.freebsd]
+script = '''
+echo "Hello World From FreeBSD"
+'''
+
+# This prevents any environment changes done in the sub task to impact the rest
+# of the flow in the parent process.
+[tasks.cleanup]
+command = "echo"
+args = ["cleanup"]
+
+[tasks.parallel-forked-cleanup-example]
+run_task = { name = ["A", "B"], fork = true, cleanup_task = "cleanup", parallel = true }
+
+[tasks.test-routing]
+run_task = [
+    { name = "test1", condition = { platforms = ["windows", "linux"], channels = ["beta", "stable"] } },
+    { name = "test2", condition = { platforms = ["mac"], rust_version = { min = "1.20.0", max = "1.30.0" } } },
+    { name = "test3", condition_script = [ "somecommand" ] },
+    { name = "test-default" }
+]
+
+[tasks.run-task-from-duckscript]
+script_runner = "@duckscript"
+script = '''
+task_name = get_env CARGO_MAKE_CURRENT_TASK_NAME
+echo The currently running cargo make task is: ${task_name}
+
+# since all env vars are auto loaded as duckscript variables by cargo-make
+# you can access them directly
+echo The currently running cargo make task is: ${CARGO_MAKE_CURRENT_TASK_NAME}
+
+echo first invocation of A task:
+cm_run_task A
+
+echo second invocation of A task:
+cm_run_task A
+
+echo running task: B:
+cm_run_task B
+'''
+
+[tasks.rust]
+script_runner = "@rust"
+script = '''
+//! ```cargo
+//! [dependencies]
+//! envmnt = "*"
+//! ```
+fn main() {
+    let value = envmnt::get_or("PATH", "NO PATH VAR DEFINED");
+    println!("Path Value: {}", &value);
+}
+'''
+
+[tasks.python]
+script_runner = "python"
+script_extension = "py"
+script = '''
+print("Hello, World!")
+'''
+
+[tasks.perl]
+script_runner = "perl"
+script_extension = "pl"
+script = '''
+print "Hello, World!\n";
+'''
+
+[tasks.javascript]
+script_runner = "node"
+script_extension = "js"
+script = '''
+console.log('Hello, World!');
+'''
+
+[tasks.php]
+script_runner = "php"
+script_extension = "php"
+script = '''
+<?php
+echo "Hello, World!\n";
+'''
+
+[tasks.powershell]
+script_runner = "powershell"
+script_extension = "ps1"
+script = '''
+Write-Host "Hello, World!"
+'''
+
+[tasks.shebang-sh]
+script = '''
+#!/usr/bin/env sh
+echo hello
+'''
+
+[tasks.test-flow]
+env = { "SOME_ENV_VAR" = "value" }
+run_task = "actual-task"
+
+[tasks.actual-task]
+condition = { env_set = [ "SOME_ENV_VAR" ] }
+script = '''
+echo var: ${SOME_ENV_VAR}
+'''
+
+# To only load environment variables whenever a variable hasn't been defined
+# yet, use the defaults_only property.
+env_files = [
+    { path = "./load_only_undefined.env", defaults_only = true },
+    { path = "./load_all.env" }
+]
