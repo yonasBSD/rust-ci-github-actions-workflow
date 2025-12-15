@@ -14,13 +14,13 @@ jobs:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         # Disabling shallow clones is recommended for improving the relevancy of reporting
         fetch-depth: 0
 
     - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@v5.3.1
+      uses: sonarsource/sonarqube-scan-action@v7.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -29,7 +29,7 @@ jobs:
     name: Secrets
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install dependencies
       run: |
@@ -44,7 +44,7 @@ jobs:
     name: Vulnerabilities
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - uses: sigstore/cosign-installer@main
 
     - name: Install dependencies

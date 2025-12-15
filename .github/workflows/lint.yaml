@@ -46,8 +46,12 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt
-      - run: cargo fmt --version
-      - run: cargo fmt --all --check
+
+      - name: cargo fmt
+        run: |
+          cargo fmt --version
+          cargo clippy --fix --workspace
+          cargo fmt --all --check
 
       - name: treefmt
         run: |
@@ -55,6 +59,9 @@ jobs:
           curl -sSLo treefmt.tgz https://github.com/numtide/treefmt/releases/download/$(cat .ver)/treefmt_$(cat .ver | cut -d'v' -f2)_linux_amd64.tar.gz
           tar -xvf treefmt.tgz
           ./treefmt
+
+      - name: autofix.ci
+        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
 
   clippy:
     name: Clippy
@@ -95,7 +102,7 @@ jobs:
       - uses: actions-rs/clippy-check@b5b5f21f4797c02da247df37026fcd0a5024aa4d # v1.0.7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-features
+          args: --all-targets --all-features
           name: Clippy Output
 
   semver:
