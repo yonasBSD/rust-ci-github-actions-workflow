@@ -327,7 +327,7 @@ jobs:
         run: |
           cargo test --all-features
 
-# TODO:
+# TODO: Add support for more OSs
 # - OpenSUSE
 # - Rocky Linux
 # - Fedora

@@ -91,7 +91,7 @@ This job:
 
 Environment variables used in this job:
 - `PROJECT_NAME_UNDERSCORE` - project name with hyphens(-) as underscores(_) needed for code coverage
-- `CARGO_INCREMENTAL`, `RUSTFLAGS`, `RUSTDOCFLAGS` - added to `CARGO_OPTIONS` in cargo test needed for code coverage
+- `CARGO_INCREMENTAL`, `RUSTFLAGS`, `RUSTDOCFLAGS` - added to `CARGO_OPTIONS` in cargo nextest needed for code coverage
 
 Steps:
 1. Cache dependencies.
@@ -103,7 +103,7 @@ Steps:
 
 2. Generate test results and code coverage data.
     1. It installs [cargo2junit](https://github.com/johnterickson/cargo2junit) needed for formatting the test result and [grcov](https://github.com/mozilla/grcov) for code coverage.
-    3. It runs `cargo test` in the nightly toolchain.
+    3. It runs `cargo nextest` in the nightly toolchain.
     - `$CARGO_OPTIONS` includes `CARGO_INCREMENTAL`, `RUSTFLAGS`, and `RUSTDOCFLAGS` options needed for code coverage.
     - `-Z unstable-options --format json` formats the test result into json.
     - ` | cargo2junit > results.xml` converts the json result into junit format for `EnricoMi/publish-unit-test-result-action` to understand and saves it as `results.xml`.
