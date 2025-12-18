@@ -49,7 +49,7 @@ jobs:
           toolchain: stable
 
       - name: Release Build
-        uses: yonasBSD/toolkit@1938a129c53431ea31c70b0373f60b6cff4999b4 # v0.1.0
+        uses: yonasBSD/toolkit@78ad3a58b6617ea330c3641c2965005585e6652b # v0.1.0
         with:
           run: |
             cargo auditable build --release
