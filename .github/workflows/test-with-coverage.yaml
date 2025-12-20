@@ -92,7 +92,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           run: |
-            git config --global --add safe.directory /github/workspace
             task test
 
       - name: Generate test results and coverage report
