@@ -44,23 +44,19 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # v0.0.9
 
-      - uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # stable
+      - name: Cargo Format
+        uses: yonasBSD/toolkit@78ad3a58b6617ea330c3641c2965005585e6652b # v0.1.0
         with:
-          toolchain: stable
-          components: rustfmt
+          run: |
+            cargo format --version
+            cargo clippy --fix --workspace
+            cargo format --check
 
-      - name: cargo fmt
-        run: |
-          cargo fmt --version
-          cargo clippy --fix --workspace
-          cargo fmt --all --check
-
-      - name: treefmt
-        run: |
-          curl -s https://api.github.com/repos/numtide/treefmt/tags | jq -r '.[0].name' > .ver
-          curl -sSLo treefmt.tgz https://github.com/numtide/treefmt/releases/download/$(cat .ver)/treefmt_$(cat .ver | cut -d'v' -f2)_linux_amd64.tar.gz
-          tar -xvf treefmt.tgz
-          ./treefmt
+      - name: Tree Format
+        uses: yonasBSD/toolkit@78ad3a58b6617ea330c3641c2965005585e6652b # v0.1.0
+        with:
+          run: |
+            treefmt
 
   clippy:
     name: Clippy
