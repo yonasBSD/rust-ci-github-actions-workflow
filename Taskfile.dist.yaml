@@ -241,7 +241,7 @@ tasks:
 
   audit:
     desc: Perform a security audit
-    deps: ['audit:secrets', 'audit:vulnerabilities', 'audit:code-quality']
+    deps: ['audit:secrets', 'audit:vulnerabilities', 'audit:code-quality', 'audit:code-coverage']
 
   audit:secrets:
     desc: Scan for secrets
@@ -288,3 +288,13 @@ tasks:
     desc: Run sonarcube
     cmds:
       - echo sonarcube run
+
+  audit:code-coverage:
+    desc: Calculate code coverage
+    cmds:
+      - task: run:llvm-cov
+
+  run:llvm-cov:
+    desc: Run LLVM cov
+    cmds:
+      - cargo llvm-cov nextest
