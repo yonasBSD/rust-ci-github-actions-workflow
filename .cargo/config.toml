@@ -12,7 +12,7 @@ r = "run --release"
 r-all = "cargo r-native && cargo r-wasm"
 r-native = "run --relase"
 r-wasm = "run --relase --target wasm32-unknown-unknown"
-fmt = "cargo fmt --all"
+format = "fmt --all"
 cl = "clippy --all-targets --all-features -- -Dwarnings"
 
 [build]
