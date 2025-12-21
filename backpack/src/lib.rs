@@ -8,6 +8,7 @@ pub const fn multiply(a: i32, b: i32) -> i32 {
 mod test {
     use super::*;
     use demonstrate::demonstrate;
+    use pretty_assertions::assert_eq as pretty_assert_eq;
 
     #[cfg(target_arch = "wasm32")]
     use wasm_bindgen_test::wasm_bindgen_test;
@@ -21,7 +22,7 @@ mod test {
             }
 
             it "can fail" {
-                assert_eq!(multiply(2, 2), four);
+                pretty_assert_eq!(multiply(2, 2), four);
             }
 
             test "is returnable" -> Result<(), &'static str> {
@@ -42,7 +43,7 @@ mod test {
                 }
 
                 async it "awaits" {
-                    assert_eq!(four, is_4_task.await);
+                    pretty_assert_eq!(four, is_4_task.await);
                 }
             }
 
@@ -55,7 +56,7 @@ mod test {
 
                 #[wasm_bindgen_test]
                 async it "awaits in wasm" {
-                    assert_eq!(four, future_value.await);
+                    pretty_assert_eq!(four, future_value.await);
                 }
             }
         }
