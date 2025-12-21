@@ -100,7 +100,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           run: |
-            cargo test $CARGO_OPTIONS -- -Z unstable-options --format json | cargo2junit > results.xml;
+            cargo test ${CARGO_OPTIONS:+$CARGO_OPTIONS} -- -Z unstable-options --format json | cargo2junit > results.xml;
             cargo llvm-cov --all-features --workspace --codecov --output-path ./codecov.json
 
       - name: Upload test results
