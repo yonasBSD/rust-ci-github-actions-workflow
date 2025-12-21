@@ -4,8 +4,11 @@ version = "0.1.0"
 authors = ["test@example.com"]
 edition = "2021"
 license = "MIT"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Test"
+repository = "https://github.com/yonasBSD/rust-ci-github-actions-workflow"
+readme = "README.md"
+keywords = ["template", "rust"]
+categories = ["template"]
 
 [[bin]]
 name = "test2"
@@ -15,8 +18,6 @@ path = "src/main.rs"
 coverage = []
 
 [dev-dependencies]
-demonstrate = "*"
-pretty_assertions = "*"
 wasm-bindgen-test = "0.3.56"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -25,3 +26,7 @@ human-panic = "2"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen-futures = "0.4"
+
+[dependencies]
+demonstrate = { git = "https://github.com/yonasBSD/demonstrate" }
+pretty_assertions = "1.4.1"

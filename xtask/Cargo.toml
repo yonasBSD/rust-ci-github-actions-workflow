@@ -3,10 +3,15 @@ name = "xtask"
 version = "0.2.0"
 edition = "2021"
 license = "Apache-2.0"
+description = "Builder"
+repository = "https://github.com/yonasBSD/rust-ci-github-actions-workflow"
+readme = "README.md"
+keywords = ["template", "rust"]
+categories = ["template"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 
 anyhow = "1"
-xtaskops = { version = "0.5.0", git = "https://github.com/yonasBSD/xtaskops" }
+xtaskops = { git = "https://github.com/yonasBSD/xtaskops" }
