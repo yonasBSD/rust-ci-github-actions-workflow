@@ -16,9 +16,12 @@ coverage = []
 
 [dev-dependencies]
 demonstrate = "*"
-async-attributes = "*"
-async-std = "*"
 pretty_assertions = "*"
+wasm-bindgen-test = "0.3.56"
 
-[dependencies]
-human-panic = "2.0.2"
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+smol = "2"
+human-panic = "2"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"

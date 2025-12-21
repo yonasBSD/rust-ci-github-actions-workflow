@@ -8,6 +8,9 @@ mod test {
     use super::*;
     use demonstrate::demonstrate;
 
+    #[cfg(target_arch = "wasm32")]
+    use wasm_bindgen_test::wasm_bindgen_test;
+
     demonstrate! {
         describe "module" {
             use super::*;
@@ -28,16 +31,30 @@ mod test {
                 }
             }
 
-            #[async_attributes::test]
-            async context "asynchronous" {
+            // Native async tests
+            #[cfg(not(target_arch = "wasm32"))]
+            context "native async" {
                 before {
-                    let is_4_task = async_std::task::spawn(async {
+                    let is_4_task = smol::spawn(async {
                         multiply(2, 2)
                     });
                 }
 
-                it "awaits" {
-                    assert_eq!(four, is_4_task.await)
+                async it "awaits" {
+                    assert_eq!(four, is_4_task.await);
+                }
+            }
+
+            // WASM async tests (wasm-bindgen-test)
+            #[cfg(target_arch = "wasm32")]
+            context "wasm async" {
+                before {
+                    let future_value = async { multiply(2, 2) };
+                }
+
+                #[wasm_bindgen_test]
+                async it "awaits in wasm" {
+                    assert_eq!(four, future_value.await);
                 }
             }
         }

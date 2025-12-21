@@ -1,16 +1,6 @@
 [profile.default]
-# Don't cancel the run when a test fails
-cancel = "never"
-
 # Retry failing tests up to 2 times before marking them failed
 retries = 2
 
-# Set a global timeout for each test (in seconds)
-test-timeout = "120s"
-
 # Control output: show failures immediately, but keep passing tests quiet
 status-level = "all"
-
-# Optional: store junit-style reports for CI integration
-[junit]
-path = "target/nextest/junit.xml"
