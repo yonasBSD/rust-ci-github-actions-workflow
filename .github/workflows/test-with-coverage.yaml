@@ -110,13 +110,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: results.xml
 
-      - name: Run xtask coverage
-        uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          command: xtask
-          args: coverage
+      # FIXME: https://github.com/yonasBSD/rust-ci-github-actions-workflow/issues/85
+      #- name: Run xtask coverage
+      #  uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    command: xtask
+      #    args: coverage
 
       #- name: Upload Coverage Report
       #  uses: codecov/codecov-action@v5
