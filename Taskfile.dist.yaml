@@ -241,7 +241,7 @@ tasks:
 
   audit:
     desc: Perform a security audit
-    deps: ['audit:secrets', 'audit:vulnerabilities', 'audit:code-quality', 'audit:code-coverage']
+    deps: ['audit:secrets', 'audit:vulnerabilities', 'audit:code-quality', 'audit:code-coverage', 'audit:licenses']
 
   audit:secrets:
     desc: Scan for secrets
@@ -298,3 +298,25 @@ tasks:
     desc: Run LLVM cov
     cmds:
       - cargo llvm-cov nextest
+
+  audit:licenses:
+    desc: Look for incompatible licenses
+    cmds:
+      - task: run:feluda
+      - task: run:cargo-deny
+      - task: run:cargo-license
+
+  run:feluda:
+    desc: Run feluda
+    cmds:
+      - feluda
+
+  run:cargo-deny:
+    desc: Run cargo deny
+    cmds:
+      - cargo deny check licenses bans
+
+  run:cargo-license:
+    desc: Run cargo license
+    cmds:
+      - cargo license --authors --do-not-bundle
