@@ -6,8 +6,21 @@ on:
 
 jobs:
   autofix:
+    name: Auto Fix
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
-      - uses: actions/checkout@v6
-      - run: cargo fmt
-      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cargo Format
+        uses: yonasBSD/toolkit@9067fa17c79d97c3bad28da5ebba1d3c32ab3582 # v0.1.0
+        with:
+          run: |
+            cargo format
+
+      - name: Autofix
+        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27

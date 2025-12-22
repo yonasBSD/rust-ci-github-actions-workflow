@@ -1,5 +1,6 @@
 /// Multiplies two integers
-pub fn multiply(a: i32, b: i32) -> i32 {
+#[must_use]
+pub const fn multiply(a: i32, b: i32) -> i32 {
     a * b
 }
 
@@ -7,6 +8,10 @@ pub fn multiply(a: i32, b: i32) -> i32 {
 mod test {
     use super::*;
     use demonstrate::demonstrate;
+    use pretty_assertions::assert_eq as pretty_assert_eq;
+
+    #[cfg(target_arch = "wasm32")]
+    use wasm_bindgen_test::wasm_bindgen_test;
 
     demonstrate! {
         describe "module" {
@@ -17,7 +22,7 @@ mod test {
             }
 
             it "can fail" {
-                assert_eq!(multiply(2, 2), four);
+                pretty_assert_eq!(multiply(2, 2), four);
             }
 
             test "is returnable" -> Result<(), &'static str> {
@@ -28,16 +33,30 @@ mod test {
                 }
             }
 
-            #[async_attributes::test]
-            async context "asynchronous" {
+            // Native async tests
+            #[cfg(not(target_arch = "wasm32"))]
+            context "native async" {
                 before {
-                    let is_4_task = async_std::task::spawn(async {
+                    let is_4_task = smol::spawn(async {
                         multiply(2, 2)
                     });
                 }
 
-                it "awaits" {
-                    assert_eq!(four, is_4_task.await)
+                async it "awaits" {
+                    pretty_assert_eq!(four, is_4_task.await);
+                }
+            }
+
+            // WASM async tests (wasm-bindgen-test)
+            #[cfg(target_arch = "wasm32")]
+            context "wasm async" {
+                before {
+                    let future_value = async { multiply(2, 2) };
+                }
+
+                #[wasm_bindgen_test]
+                async it "awaits in wasm" {
+                    pretty_assert_eq!(four, future_value.await);
                 }
             }
         }
