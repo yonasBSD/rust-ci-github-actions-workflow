@@ -4,3 +4,6 @@ retries = 2
 
 # Control output: show failures immediately, but keep passing tests quiet
 status-level = "all"
+
+# Don't stop at first failed test
+fail-fast = false
