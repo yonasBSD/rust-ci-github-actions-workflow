@@ -101,35 +101,36 @@ jobs:
           args: --all-targets --all-features
           name: Clippy Output
 
-  semver:
-    name: Check semver
-    runs-on: ubuntu-latest
-    env:
-      SCCACHE_GHA_ENABLED: "true"
-      RUSTC_WRAPPER: "sccache"
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
-        with:
-          disable-sudo: true
-          egress-policy: block
-          allowed-endpoints: >
-            api.deps.dev:443
-            api.github.com:443
-            api.osv.dev:443
-            api.scorecard.dev:443
-            fulcio.sigstore.dev:443
-            github.com:443
-            oss-fuzz-build-logs.storage.googleapis.com:443
-            rekor.sigstore.dev:443
-            tuf-repo-cdn.sigstore.dev:443
-            www.bestpractices.dev:443
-            objects.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
-            static.rust-lang.org:443
-            index.crates.io:443
-            static.crates.io:443
-
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # v0.0.9
-      - uses: obi1kenobi/cargo-semver-checks-action@5b298c9520f7096a4683c0bd981a7ac5a7e249ae # v2.8
+  # FIXME: https://github.com/yonasBSD/rust-ci-github-actions-workflow/issues/82
+  #semver:
+  #  name: Check semver
+  #  runs-on: ubuntu-latest
+  #  env:
+  #    SCCACHE_GHA_ENABLED: "true"
+  #    RUSTC_WRAPPER: "sccache"
+  #  steps:
+  #    - name: Harden Runner
+  #      uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+  #      with:
+  #        disable-sudo: true
+  #        egress-policy: block
+  #        allowed-endpoints: >
+  #          api.deps.dev:443
+  #          api.github.com:443
+  #          api.osv.dev:443
+  #          api.scorecard.dev:443
+  #          fulcio.sigstore.dev:443
+  #          github.com:443
+  #          oss-fuzz-build-logs.storage.googleapis.com:443
+  #          rekor.sigstore.dev:443
+  #          tuf-repo-cdn.sigstore.dev:443
+  #          www.bestpractices.dev:443
+  #          objects.githubusercontent.com:443
+  #          release-assets.githubusercontent.com:443
+  #          static.rust-lang.org:443
+  #          index.crates.io:443
+  #          static.crates.io:443
+  #
+  #    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+  #    - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # v0.0.9
+  #    - uses: obi1kenobi/cargo-semver-checks-action@5b298c9520f7096a4683c0bd981a7ac5a7e249ae # v2.8
