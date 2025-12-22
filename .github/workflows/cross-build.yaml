@@ -183,7 +183,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: OpenBSD
-        uses: vmactions/openbsd-vm@a17ab0bbb35ecb55fbb4a7c19d9db9fa05caa4ce # v1.2.7
+        uses: vmactions/openbsd-vm@00c443658b29649d2105816a88d6b4b789d8a3bd # v1.2.7
         with:
           usesh: true
           sync: rsync
@@ -239,7 +239,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: NetBSD
-        uses: vmactions/netbsd-vm@f3ba9278fd64c658fb525325438ae48873dc0832 # 1.2.4
+        uses: vmactions/netbsd-vm@f83456a40093f1a18df4cda4a35335468d8e15a7 # 1.2.6
         with:
           usesh: true
           sync: rsync
