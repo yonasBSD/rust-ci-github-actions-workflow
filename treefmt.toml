@@ -2,4 +2,4 @@
 command = "rustfmt"
 excludes = []
 includes = ["*.rs"]
-options = ["--edition", "2021"]
+options = ["--edition", "2024"]
