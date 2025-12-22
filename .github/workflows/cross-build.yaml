@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
   workflow_run:
     workflows: ["Test with Code Coverage"]
     branches: [main]
@@ -57,7 +58,7 @@ jobs:
             packages.microsoft.com:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # master
@@ -105,10 +106,10 @@ jobs:
             pkg.freebsd.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: FreeBSD
-        uses: vmactions/freebsd-vm@debf37ca7b7fa40e19c542ef7ba30d6054a706a4 # v1.1.5
+        uses: vmactions/freebsd-vm@731e019efccfea928cd629783e7d14597b3a2505 # v1.1.5
         with:
           usesh: true
           sync: rsync
@@ -173,10 +174,10 @@ jobs:
             www.google.com:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: OpenBSD
-        uses: vmactions/openbsd-vm@a254d784d6fad46e22ef73c6ecbb1dc310b04777 # v1.2.3
+        uses: vmactions/openbsd-vm@292e1b3f9b7459a21e2d747caec49d273b124bd7 # v1.2.6
         with:
           usesh: true
           sync: rsync
@@ -226,10 +227,10 @@ jobs:
             cdn.NetBSD.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: NetBSD
-        uses: vmactions/netbsd-vm@7aea50f9eb16df034be5d71eb81fea9804505c28 # v1.2.0
+        uses: vmactions/netbsd-vm@f3ba9278fd64c658fb525325438ae48873dc0832 # 1.2.4
         with:
           usesh: true
           sync: rsync
@@ -272,7 +273,7 @@ jobs:
             gitlab.alpinelinux.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Setup
         uses: jirutka/setup-alpine@092137b2b59839555e7432042a9533c64ed482a4 # v1
@@ -316,7 +317,7 @@ jobs:
             openpgpkey.archlinux.org:443
 
       - name: Checkout sources
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Setup
         uses: RangHo/setup-arch@19885eda0c0b0d1791e61e1d32f2552d42944b14 # main
