@@ -8,7 +8,7 @@ pub const fn multiply(a: i32, b: i32) -> i32 {
 mod test {
     use super::*;
     use demonstrate::demonstrate;
-    use pretty_assertions::assert_eq as pretty_assert_eq;
+    use pretty_assertions::{assert_eq as pretty_assert_eq, assert_ne as pretty_assert_ne};
 
     #[cfg(target_arch = "wasm32")]
     use wasm_bindgen_test::wasm_bindgen_test;
@@ -21,8 +21,9 @@ mod test {
                 let four = 4;
             }
 
+            #[should_panic]
             it "can fail" {
-                pretty_assert_eq!(multiply(2, 2), four);
+                pretty_assert_ne!(multiply(2, 2), four);
             }
 
             test "is returnable" -> Result<(), &'static str> {
