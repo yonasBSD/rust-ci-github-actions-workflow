@@ -96,7 +96,7 @@ Environment variables used in this job:
 Steps:
 1. Cache dependencies.
     It caches download and compilation of dependencies based on a hash of Cargo.lock to shorten build time
-    with [actions/cache@v2](https://github.com/actions/cache).
+    with [actions/cache@v5](https://github.com/actions/cache).
     - The key is `${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Cargo.lock') }}`
         where `env.cache-name`: `cache-dependencies`.
     - Cache is stored at the end of the job on cache miss. Cache is not updated on cache hit.
@@ -128,7 +128,7 @@ It runs on main branch push.
 
 #### 📋 Release Packaging job
 
-This job builds the project in release mode and uploads the binary as an artifact through [actions/upload-artifact@v2](https://github.com/actions/upload-artifact).
+This job builds the project in release mode and uploads the binary as an artifact through [actions/upload-artifact@v6](https://github.com/actions/upload-artifact).
 
 The binary `target/release/${{ env.PROJECT_NAME_UNDERSCORE }}` is uploaded as `${{ env.PROJECT_NAME_UNDERSCORE }}`.
 
