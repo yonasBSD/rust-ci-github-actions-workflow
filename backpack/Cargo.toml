@@ -2,7 +2,7 @@
 name = "test2"
 version = "0.1.0"
 authors = ["test@example.com"]
-edition = "2021"
+edition = "2024"
 license = "MIT"
 description = "Test"
 repository = "https://github.com/yonasBSD/rust-ci-github-actions-workflow"
