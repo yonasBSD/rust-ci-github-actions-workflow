@@ -18,6 +18,9 @@ format:
 audit:
   task audit
 
+coverage:
+  task audit:code-coverage
+
 clean:
   task clean
 

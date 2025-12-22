@@ -17,3 +17,5 @@ Cargo.lock
 # Build output
 build/
 coverage/
+**/results.json
+**/results.xml
