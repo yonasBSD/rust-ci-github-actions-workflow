@@ -64,6 +64,9 @@ install:
   lefthook install
   prek install
   prek auto-upgrade
+  mise trust --quiet .mise.toml
+  @[ -f ".mise.local.toml" ] && mise trust --quiet .mise.local.toml || return 0
+  mise install
 
 help:
   task help
