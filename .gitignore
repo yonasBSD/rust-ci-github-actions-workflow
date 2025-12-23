@@ -19,3 +19,6 @@ build/
 coverage/
 **/results.json
 **/results.xml
+
+# Mise local config (may contain secrets)
+.mise.local.toml
