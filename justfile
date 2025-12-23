@@ -24,6 +24,23 @@ coverage:
 clean:
   task clean
 
+@doctor:
+  echo "\n\n=== Just Doctor ===\n\n"
+  just -l
+  echo "\n\n=== Taskfile Doctor ===\n\n"
+  task -l
+  echo "\n\n=== Pipelight Doctor ===\n\n"
+  pipelight ls
+  echo "\n\n=== Lefthook Doctor ===\n\n"
+  lefthook validate
+  echo "\n\n=== Prek Doctor ===\n\n"
+  prek list
+  echo "\n\n=== Comtrya Doctor ===\n\n"
+  comtrya -d manifests status
+  echo "\n\n=== Goji Doctor ===\n\n"
+  goji check
+  COUNT=$(cat .goji.json | jq '.types | length') ; echo "\n\nFound $COUNT goji types."
+
 prepare-commit-msg file:
   #!/bin/sh
   if [ ! -f ".goji.json" ]; then
@@ -43,9 +60,10 @@ lint-commit-msg file:
     return 1
   fi
 
-# TODO: Add remaining packages listed in README.md
 install:
   lefthook install
+  prek install
+  prek auto-upgrade
 
 help:
   task help
