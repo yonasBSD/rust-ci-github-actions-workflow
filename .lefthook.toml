@@ -29,7 +29,7 @@ run = "cog check"
 interactive = true
 run = "just --timestamp prepare-commit-msg {1}"
 [commit-msg.commands.commitzen.env]
-LEFTHOOK = 0
+LEFTHOOK = "0"
 
 # Validate commit messages
 [commit-msg.commands.commitzen]
