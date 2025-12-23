@@ -1,0 +1,19 @@
+[settings]
+paranoid = true
+
+[tools]
+"aqua:casey/just" = "latest"
+"aqua:go-task/task" = "latest"
+
+[env]
+MISE_IS_WORKING = "true"
+_.file = ".env"
+
+[tasks.hello]
+description = "Test if mise works"
+depends = ["ping"]
+run = "echo Hello from mise!"
+
+[tasks.ping]
+description = "Ping Pong"
+run = "echo Pong"
