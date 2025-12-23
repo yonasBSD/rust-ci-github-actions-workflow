@@ -125,9 +125,21 @@ tasks:
       - echo www --port 4002 build/tests/hurl
 
   clean:
-    desc: Clean up
+    desc: "Clean up"
+    deps: ["run:cargo-clean", "run:mise-clean"]
+
+  run:cargo-clean:
+    desc: "Run cargo clean"
     cmds:
-      - echo Cleaning...
+      - cargo clean
+
+  run:mise-clean:
+    desc: "Run mise clean"
+    status:
+      - test ! -f .mise.toml
+    cmds:
+      - mise prune
+      - mise cache clear
 
   lint:
     desc: Lint code
