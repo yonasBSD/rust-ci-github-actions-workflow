@@ -7,3 +7,7 @@ status-level = "all"
 
 # Don't stop at first failed test
 fail-fast = false
+
+# Optional: store junit-style reports for CI integration
+[profile.default.junit]
+path = "junit.xml"
