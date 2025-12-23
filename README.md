@@ -110,12 +110,12 @@ Steps:
     4. It generates code coverage data in lcov format through `grcov` saved as `lcov.info`.
 
 3. Upload test results.
-    It uploads the test result (`results.xml`) through [EnricoMi/publish-unit-test-result-action@v1](https://github.com/EnricoMi/publish-unit-test-result-action).
+    It uploads the test result (`results.xml`) through [EnricoMi/publish-unit-test-result-action@v2](https://github.com/EnricoMi/publish-unit-test-result-action).
     - The action outputs the test result (**Test Results** added to a random workflow).
     - For pull requests, the action adds a comment containing the test results.
 
 4. Upload to CodeCov.
-    It uploads the code coverage result (`lcov.info`) to CodeCov through [codecov/codecov-action@v1](https://github.com/codecov/codecov-action).
+    It uploads the code coverage result (`lcov.info`) to CodeCov through [codecov/codecov-action@v5](https://github.com/codecov/codecov-action).
     - For pull requests, the actions adds a comment containing the code coverage report.
     - For private repositories, add your token from CodeCov repository setting on GitHub Secrets and uncomment the line: `token: ${{ secrets.CODECOV_TOKEN }}`.
 
