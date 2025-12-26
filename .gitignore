@@ -22,3 +22,6 @@ coverage/
 
 # Mise local config (may contain secrets)
 .mise.local.toml
+
+# Tribble
+.tribble/
