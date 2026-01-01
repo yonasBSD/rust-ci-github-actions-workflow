@@ -111,7 +111,7 @@ jobs:
             packages.microsoft.com
             0.freebsd.pool.ntp.org:443
             2.freebsd.pool.ntp.org:443
-            pkg.freebsd.org:443
+            pkg.FreeBSD.org:443
 
       - name: Checkout sources
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
