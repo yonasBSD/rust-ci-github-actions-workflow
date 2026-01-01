@@ -125,8 +125,17 @@ jobs:
           prepare: |
             mkdir -p /usr/local/etc/pkg/repos
             cat << EOF > /usr/local/etc/pkg/repos/FreeBSD.conf
-            FreeBSD: {
-              url: "https://pkg.freebsd.org/\${ABI}/latest",
+            FreeBSD-ports: {
+              url: "https://pkg.FreeBSD.org/\${ABI}/latest",
+              mirror_type: "none",
+              signature_type: "fingerprints",
+              fingerprints: "/usr/share/keys/pkg",
+              enabled: yes
+            }
+            EOF
+            cat << EOF > /usr/local/etc/pkg/repos/kmods.conf
+            FreeBSD-ports-kmods: {
+              url: "https://pkg.FreeBSD.org/\${ABI}/kmods_latest",
               mirror_type: "none",
               signature_type: "fingerprints",
               fingerprints: "/usr/share/keys/pkg",
