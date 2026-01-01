@@ -126,8 +126,8 @@ jobs:
             mkdir -p /usr/local/etc/pkg/repos
             cat << EOF > /usr/local/etc/pkg/repos/FreeBSD.conf
             FreeBSD: {
-              url: "pkg+https://pkg.freebsd.org/\${ABI}/latest",
-              mirror_type: "srv",
+              url: "https://pkg.freebsd.org/\${ABI}/latest",
+              mirror_type: "none",
               signature_type: "fingerprints",
               fingerprints: "/usr/share/keys/pkg",
               enabled: yes
