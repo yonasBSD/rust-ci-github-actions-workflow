@@ -16,7 +16,13 @@ format = "fmt --all"
 cl = "clippy --all-targets --all-features -- -Dwarnings"
 
 [build]
-rustflags = ["-Dwarnings", "-Dunsafe-code"]
+rustflags = [
+  "-Dwarnings",             # Denies all lints that are currently set to "warn" level.
+  "-Dunsafe-code",          # Prevents the use of any unsafe blocks.
+  "-Dmissing-docs",         # Ensures all public items have documentation.
+  "-Ddeprecated",           # Treats the use of deprecated items as errors.
+  "-Doverflowing-literals", # Denies literal values that are too big for their type.
+]
 
 [target.wasm32-unknown-unknown]
 runner = "wasm-bindgen-test-runner"
