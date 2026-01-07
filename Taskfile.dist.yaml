@@ -19,7 +19,7 @@ vars:
   author: Acme Inc.
   version: 0.0.1
   build:
-    sh: git rev-parse --short HEAD
+    sh: "[ -d .git ] && git rev-parse --short HEAD || echo dev"
   date:
     sh: date -Ins
   license: MIT
@@ -44,9 +44,15 @@ tasks:
     cmds:
       - cmd: echo " Hello {{ .fullname }}!"
         silent: true
-      - cmd: echo -e "\nRun `just help` to get started."
+      - cmd: echo -e "\nRun 'just help' to get started."
         silent: true
       - cmd: just help
+        silent: true
+
+  help:
+    desc: "Display help"
+    cmds:
+      - cmd: task --help
         silent: true
 
   build:
