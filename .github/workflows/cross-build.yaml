@@ -304,7 +304,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Setup
-        uses: jirutka/setup-alpine@092137b2b59839555e7432042a9533c64ed482a4 # v1
+        uses: jirutka/setup-alpine@ae3b3ddba35054804fc4a3507b519fa7e8152050 # v1
         with:
           branch: edge
 
