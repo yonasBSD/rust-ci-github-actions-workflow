@@ -25,3 +25,6 @@ coverage/
 
 # Tribble
 .tribble/
+
+# Core dumps
+*.core
