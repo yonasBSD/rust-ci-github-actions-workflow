@@ -6,8 +6,6 @@ env:
   #ENV: staging
   ENV: production
 
-dotenv: ['.env', '{{ .taskEnv }}']
-
 vars:
   project: Hello World
   homepage: https://example.com

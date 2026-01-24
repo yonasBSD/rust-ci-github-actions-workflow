@@ -1,0 +1,13 @@
+version: '3'
+
+dotenv: ['.env', '{{ .taskEnv }}']
+
+includes:
+  dist:
+    taskfile: ./scripts/Taskfile.dist.yaml
+    flatten: true  # This removes the 'dist:' prefix requirement
+
+  local:
+    taskfile: ./scripts/Taskfile.local.yaml
+    optional: true
+    flatten: true  # This removes the 'local:' prefix requirement
