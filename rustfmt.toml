@@ -1,0 +1,78 @@
+# =============================================================================
+# RUSTFMT CONFIGURATION
+# =============================================================================
+# This configuration defines a vertical, declarative, and diff-friendly
+# coding style. It prioritizes scannability for complex builder patterns
+# and minimizes "git noise" during refactors.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# CORE ENGINE & VERSIONING
+# -----------------------------------------------------------------------------
+
+# Use the 2024 Style Edition to leverage modern formatting logic.
+# Requires a Nightly toolchain.
+unstable_features = true
+style_edition = "2024"
+edition = "2024"
+
+# -----------------------------------------------------------------------------
+# LAYOUT & INDENTATION
+# -----------------------------------------------------------------------------
+
+# Prefer "Block" indentation over "Visual" alignment.
+# This prevents code from drifting toward the right margin when nested
+# and ensures consistent 4-space indentation regardless of identifier length.
+indent_style = "Block"
+
+# Forces multi-argument functions, closures, and calls into a "Tall" layout.
+# This is specifically optimized for complex error constructors and
+# command-dispatch systems where horizontal density inhibits scan-ability.
+fn_params_layout = "Tall"
+
+# -----------------------------------------------------------------------------
+# STRUCTS & MATCH ARMS
+# -----------------------------------------------------------------------------
+
+# Keep structured literals vertical.
+# Prevents rustfmt from collapsing structs into single-liners, preserving
+# intentional whitespace for data-heavy definitions.
+struct_lit_single_line = false
+
+# Disable field alignment columns.
+# A threshold of 0 prevents massive diffs when a single field name length changes,
+# ensuring that refactors only affect the lines actually being modified.
+struct_field_align_threshold = 0
+
+# Ensure match arms remain diff-friendly.
+# This makes moving or adding match arms cleaner in version control.
+match_block_trailing_comma = true
+
+# -----------------------------------------------------------------------------
+# BUILDER PATTERNS (ARIADNE / MIETTE)
+# -----------------------------------------------------------------------------
+
+# Optimize for "Fluent" API chains.
+# Allows delimited expressions (like .with_message()) to overflow onto
+# new lines, which is essential for readable diagnostic and UI builders.
+overflow_delimited_expr = true
+
+# -----------------------------------------------------------------------------
+# IMPORT MANAGEMENT
+# -----------------------------------------------------------------------------
+
+# Consolidate imports at the crate level.
+# Balances density and organization by grouping sub-modules under the crate root.
+imports_granularity = "Crate"
+
+# Group imports by category: Standard Library -> External Crates -> Local.
+group_imports = "StdExternalCrate"
+
+# -----------------------------------------------------------------------------
+# DOCUMENTATION & COMMENTS
+# -----------------------------------------------------------------------------
+
+# Ensure comments stay within the readable viewport.
+# This prevents documentation drift on ultra-wide monitors.
+wrap_comments = true
+comment_width = 100
