@@ -1,7 +1,6 @@
-use test2::multiply;
-
 #[cfg(not(target_arch = "wasm32"))]
 use human_panic::{metadata, setup_panic};
+use test2::multiply;
 
 fn main() {
     #[cfg(not(target_arch = "wasm32"))]
