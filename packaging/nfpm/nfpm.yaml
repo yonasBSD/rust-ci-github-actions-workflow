@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 yonasBSD
+#
+# SPDX-License-Identifier: MIT
+
+# NFPM Universal Configuration for Rust Projects
+#
+# This file remains identical across all repositories.
+# Metadata is injected via environment variables in GitHub Actions.
+#
+# See https://nfpm.goreleaser.com/configuration for detailed usage
+
+name: "${PROJECT_BIN}"           # Dynamic crate name from Cargo.toml
+arch: "amd64"
+platform: "linux"
+version: "${VERSION}"            # Cleaned git tag (e.g., 1.2.3)
+section: "default"
+priority: "extra"
+maintainer: "${MAINTAINER}"      # First author from Cargo.toml
+description: "${DESCRIPTION}"    # Package description from Cargo.toml
+vendor: "${VENDOR}"              # Organization/User name
+homepage: "${HOMEPAGE}"          # Repository URL
+license: "${LICENSE}"            # SPDX license from Cargo.toml
+
+# Binary mapping
+contents:
+  - src: "./target/release/${PROJECT_BIN}"
+    dst: "/usr/bin/${PROJECT_BIN}"
+    file_info:
+      mode: 0755            # Ensure binary is executable
+
+# Package lifecycle scripts
+# Scripts are stored in packaging/scripts/ to avoid root directory clutter
+overrides:
+  rpm:
+    scripts:
+      preinstall: ./packaging/scripts/preinstall.sh
+      postremove: ./packaging/scripts/postremove.sh
+  deb:
+    scripts:
+      postinstall: ./packaging/scripts/postinstall.sh
+      preremove: ./packaging/scripts/preremove.sh

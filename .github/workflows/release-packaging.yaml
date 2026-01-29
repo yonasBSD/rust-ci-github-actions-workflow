@@ -7,27 +7,17 @@ on:
 
 permissions:
   contents: write
-  id-token: write
+  id-token: write   # required for cosign + SLSA provenance
+  attestations: write
 
 jobs:
   release:
-    name: Build (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        # Define the OS targets
-        include:
-          - os: ubuntu-latest
-            artifact_ext: '{*.deb,*.apk,*.ipk,*.rpm,*.zst}'
-          - os: macos-latest
-            artifact_ext: '*.dmg' # Or your preferred Mac format
-          - os: windows-latest
-            artifact_ext: '*.exe'
+    name: Linux Release
+    runs-on: ubuntu-latest
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2
+        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -35,88 +25,147 @@ jobs:
             api.github.com:443
             api.osv.dev:443
             api.scorecard.dev:443
+            azure.archive.ubuntu.com:80
+            changelogs.ubuntu.com:443
+            esm.ubuntu.com:443
             fulcio.sigstore.dev:443
+            get.anchore.io:443
             github.com:443
-            uploads.github.com:443
-            rekor.sigstore.dev:443
-            tuf-repo-cdn.sigstore.dev:443
-            www.bestpractices.dev:443
-            release-assets.githubusercontent.com:443
-            objects.githubusercontent.com:443
-            raw.githubusercontent.com:443
-            static.rust-lang.org:443
-            static.crates.io:443
+            gobinaries.com:443
             index.crates.io:443
-            # Windows/Mac specific update mirrors
-            *.actions.githubusercontent.com:443
-            *.blob.core.windows.net:443
+            objects.githubusercontent.com:443
+            oss-fuzz-build-logs.storage.googleapis.com:443
+            packages.microsoft.com:443
+            raw.githubusercontent.com:443
+            rekor.sigstore.dev:443
+            release-assets.githubusercontent.com:443
+            security.ubuntu.com:80
+            static.crates.io:443
+            static.rust-lang.org:443
+            tuf-repo-cdn.sigstore.dev:443
+            uploads.github.com:443
+            www.bestpractices.dev:443
+            _http._tcp.azure.archive.ubuntu.com:443
+            _https._tcp.esm.ubuntu.com:443
+            _https._tcp.motd.ubuntu.com:443
+            _https._tcp.packages.microsoft.com:443
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Derive project names
-        shell: bash
+      # Setup Environment & Tools
+      - name: Install Toolchain & Utilities
         run: |
+          sudo apt-get update && sudo apt-get install -y b3sum jq
+          curl -sfL https://gobinaries.com/goreleaser/nfpm | sh
+
+      - name: Install Sigstore Tools
+        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@deef08a0db64bfad603422135db61477b16cef56 # v0.22.1
+
+      - name: Set Project Metadata
+        run: |
+          # Extract crate name dynamically to handle any repo name
           CRATE_NAME=$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[0].name')
           echo "PROJECT_BIN=$CRATE_NAME" >> $GITHUB_ENV
-          echo "PROJECT_NAME_UNDERSCORE=$(echo "$CRATE_NAME" | tr '-' '_')" >> $GITHUB_ENV
+          echo "PROJECT_NAME_UNDERSCORE=${CRATE_NAME//-/_}" >> $GITHUB_ENV
 
-      - name: Release Build
+      # Build & Package
+      - name: Build Reproducible Binary
         uses: yonasBSD/toolkit@e3156a095eb4a759778ad8ef10dfd58dd00993e6 # v1.0.0
         with:
           run: |
+            # Set source date for reproducible builds
+            export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
+            export CARGO_INCREMENTAL=0
             cargo auditable build --release
 
-      # NFPM is Linux-centric (deb/rpm/apk).
-      # We only run it on Linux to avoid errors on Windows/Mac.
-      - name: Create Linux Packages (NFPM)
-        if: matrix.os == 'ubuntu-latest'
-        shell: bash
+      - name: Prepare Packaging Environment
         run: |
-          VERSION=${{ github.ref_name }}
-          sed -i -E "s/^version:.+$/version: ${VERSION#v}/g" packaging/nfpm/nfpm.yaml
-          curl -sL https://github.com/goreleaser/nfpm/releases/latest/download/nfpm_$(uname -s)_$(uname -m).tar.gz | tar xz
+          # Ensure packaging/scripts exists even if the repo doesn't use them
+          mkdir -p packaging/scripts
+          # Create empty shell scripts if they don't exist so NFPM doesn't throw a 'file not found' error
+          for s in preinstall.sh postinstall.sh preremove.sh postremove.sh; do
+            if [ ! -f "packaging/scripts/$s" ]; then
+              echo "#!/bin/sh" > "packaging/scripts/$s"
+              chmod +x "packaging/scripts/$s"
+            fi
+          done
+
+      # Get project details
+      - name: Set Project Metadata
+        run: |
+          # Extract metadata directly from Cargo.toml
+          METADATA=$(cargo metadata --no-deps --format-version 1)
+
+          CRATE_NAME=$(echo $METADATA | jq -r '.packages[0].name')
+          DESC=$(echo $METADATA | jq -r '.packages[0].description')
+          LICE=$(echo $METADATA | jq -r '.packages[0].license')
+          # Grabs the first author from the list
+          MAINT=$(echo $METADATA | jq -r '.packages[0].authors[0]')
+
+          echo "PROJECT_BIN=$CRATE_NAME" >> $GITHUB_ENV
+          echo "PROJECT_NAME_UNDERSCORE=${CRATE_NAME//-/_}" >> $GITHUB_ENV
+          echo "PROJECT_DESC=$DESC" >> $GITHUB_ENV
+          echo "PROJECT_LICENSE=$LICE" >> $GITHUB_ENV
+          echo "PROJECT_MAINTAINER=$MAINT" >> $GITHUB_ENV
+
+      # Generate all packages
+      - name: Generate Packages (NFPM)
+        env:
+          VERSION: ${{ github.ref_name }}
+          MAINTAINER: ${{ env.PROJECT_MAINTAINER }}
+          DESCRIPTION: ${{ env.PROJECT_DESC }}
+          LICENSE: ${{ env.PROJECT_LICENSE }}
+          VENDOR: "yonasBSD"
+          HOMEPAGE: "${{ github.event.repository.html_url }}"
+        run: |
+          # Clean 'v' from tag (v1.0.0 -> 1.0.0)
+          export VERSION=${VERSION#v}
+
           for pkg in deb apk archlinux rpm ipk; do
-            ./nfpm package --config packaging/nfpm/nfpm.yaml --packager $pkg
+            nfpm package --config packaging/nfpm/nfpm.yaml --packager $pkg
           done
 
-      - name: Install Tooling (Multi-platform)
-        shell: bash
+      # Security, Checksums, and Signatures
+      - name: Generate SBOMs, Checksums, and Signatures
         run: |
-          # Install Cosign
-          LATEST_COSIGN=$(curl -sL https://api.github.com/repos/sigstore/cosign/releases/latest | jq -r .tag_name)
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            curl -LO "https://github.com/sigstore/cosign/releases/download/${LATEST_COSIGN}/cosign-windows-amd64.exe"
-            mv cosign-windows-amd64.exe cosign.exe
-          else
-            curl -LO "https://github.com/sigstore/cosign/releases/download/${LATEST_COSIGN}/cosign-$(uname -s | tr '[:upper:]' '[:lower:]')-amd64"
-            chmod +x cosign-* && mv cosign-* /usr/local/bin/cosign || mv cosign-* ./cosign
-          fi
+          # Generate BLAKE3 checksums for all artifacts
+          b3sum *.deb *.apk *.ipk *.rpm *.zst > checksums-blake3.txt
 
-      - name: Sign and Checksum
-        shell: bash
-        run: |
-          # Sign everything matching the matrix extension
-          for f in ${{ matrix.artifact_ext }}; do
-            [ -e "$f" ] || continue
-            ./cosign sign-blob --yes --output-signature "$f.sig" "$f" || cosign sign-blob --yes --output-signature "$f.sig" "$f"
+          # Loop through artifacts to generate SBOMs and Cosign signatures
+          for f in *.deb *.apk *.ipk *.rpm *.zst; do
+            syft "$f" -o spdx-json="sbom-$f.spdx.json"
+            cosign sign-blob --yes --output-signature "$f.sig" "$f"
           done
-          # Simple SHA256 (b3sum isn't always pre-installed on Win/Mac runners)
-          shasum -a 256 ${{ matrix.artifact_ext }} > checksums.txt
 
-      - name: Attestations
-        uses: actions/attest-artifact@v1
+      # Attestations (GitHub Native Security)
+      - name: Attest SBOMs
+        uses: actions/attest-sbom@4651f806c01d8637787e274ac3bdf724ef169f34 # v3.0.0
         with:
-          subject-path: "${{ matrix.artifact_ext }}"
-
-      - name: Create Release
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
-        with:
-          files: |
-            ${{ matrix.artifact_ext }}
-            *.sig
-            checksums.txt
+          sbom-path: 'sbom-*.spdx.json'
 
       - name: Generate SLSA Level 3 Provenance
-        uses: actions/attest-build-provenance@92c65d2898f1f53cfdc910b962cecff86e7f8fcc # v1
+        uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
         with:
-          subject-path: "${{ matrix.artifact_ext }}"
+          subject-path: |
+            *.deb
+            *.apk
+            *.ipk
+            *.rpm
+            *.zst
+
+      # Publication
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          files: |
+            *.deb
+            *.apk
+            *.ipk
+            *.rpm
+            *.zst
+            *.sig
+            sbom-*.spdx.json
+            checksums-blake3.txt
