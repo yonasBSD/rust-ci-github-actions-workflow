@@ -6,12 +6,12 @@ pub const fn multiply(a: i32, b: i32) -> i32 {
 
 #[cfg(test)]
 mod test {
-    use super::*;
     use demonstrate::demonstrate;
     use pretty_assertions::{assert_eq as pretty_assert_eq, assert_ne as pretty_assert_ne};
-
     #[cfg(target_arch = "wasm32")]
     use wasm_bindgen_test::wasm_bindgen_test;
+
+    use super::*;
 
     demonstrate! {
         describe "module" {
