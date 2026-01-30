@@ -31,7 +31,7 @@ jobs:
           - { name: FreeBSD, runner: ubuntu-latest, type: vm, action: "vmactions/freebsd-vm@v1", prepare: "pkg update -f; pkg install -y curl rust-nightly" }
           - { name: OpenBSD, runner: ubuntu-latest, type: vm, action: "vmactions/openbsd-vm@v1", prepare: "pkg_add curl rust" }
 
-          # Linux Containers (New TODOs)
+          # Linux Containers
           - { name: Fedora, runner: ubuntu-latest, type: container, image: "fedora:latest", pkg: "dnf install -y rust cargo" }
           - { name: Rocky, runner: ubuntu-latest, type: container, image: "rockylinux:9", pkg: "dnf install -y rust cargo" }
           - { name: OpenSUSE, runner: ubuntu-latest, type: container, image: "opensuse/tumbleweed", pkg: "zypper install -y rust cargo" }
