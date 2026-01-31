@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 yonasBSD
+#
+# SPDX-License-Identifier: MIT
+
 name: Auto Merge Dependabot
 
 on:
@@ -11,18 +15,24 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    # Check if the PR is from dependabot
+    if: github.actor == 'dependabot[bot]'  # zizmor: ignore[bot-conditions]
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@08eff52bf64351f401fb50d4972fa95b9f2c2d1b # v2.4.0
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ secrets.WORKFLOW_TOKEN }}"
 
       - name: Enable auto-merge for Dependabot PRs
         run: |
+          # Approve the PR first
           gh pr review --approve "$PR_URL"
-          gh pr merge --squash --auto "$PR_URL"
+
+          # Force the squash commit to use the PR title as the subject.
+          # This ensures the commit starts with "build(deps):"
+          gh pr merge --squash --auto --subject "$PR_TITLE" "$PR_URL"
         env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
