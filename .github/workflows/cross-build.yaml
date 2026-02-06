@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2
+        uses: step-security/harden-runner@e3f713f2d8f53843e71c69a996d56f51aa9adfb9 # v2.14.1
         with:
           egress-policy: block
           allowed-endpoints: >
@@ -61,16 +61,16 @@ jobs:
             slackware.osuosl.org:80 *.pool.ntp.org:443 time.cloudflare.com:443
 
       - name: Checkout sources
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@v6.0.2
 
       # --- Logic for Native OS (Ubuntu, Mac, Windows) ---
       - name: Install Rust (Native)
         if: matrix.os.type == 'native'
-        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
+        uses: dtolnay/rust-toolchain@v1
 
       - name: Rust Cache (Native)
         if: matrix.os.type == 'native'
-        uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2.8.2
+        uses: Swatinem/rust-cache@v2.8.2
 
       - name: Run Cargo Test (Native)
         if: matrix.os.type == 'native'
@@ -98,7 +98,7 @@ jobs:
       # --- Logic for Alpine ---
       - name: Setup Alpine
         if: matrix.os.type == 'alpine'
-        uses: jirutka/setup-alpine@ae3b3ddba35054804fc4a3507b519fa7e8152050 # v1
+        uses: jirutka/setup-alpine@v1.4.1
         with:
           branch: edge
 
@@ -110,7 +110,7 @@ jobs:
       # --- Logic for Arch ---
       - name: Setup Arch
         if: matrix.os.type == 'arch'
-        uses: RangHo/setup-arch@19885eda0c0b0d1791e61e1d32f2552d42944b14 # main
+        uses: RangHo/setup-arch@v1.2.2
         with:
           packages: "rust"
 
