@@ -20,6 +20,9 @@ coverage/
 **/results.json
 **/results.xml
 
+# Documentation builds
+build/output/
+
 # Mise local config (may contain secrets)
 .mise.local.toml
 
@@ -28,3 +31,13 @@ coverage/
 
 # Core dumps
 *.core
+
+# Coverage reports
+# -----------------
+# The default directory used by cargo-llvm-cov
+coverage/
+# The custom directory we specified in our Taskfile
+coverage-report/
+# Raw profile data generated during test execution
+*.profraw
+*.profdata
