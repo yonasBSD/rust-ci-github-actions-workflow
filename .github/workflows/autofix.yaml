@@ -14,15 +14,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Cargo Format
-        uses: yonasBSD/toolkit@v1.0.0
+        uses: yonasBSD/toolkit@e3156a095eb4a759778ad8ef10dfd58dd00993e6 # v1.0.0
         with:
           run: |
             cargo format
 
       - name: Autofix
-        uses: autofix-ci/action@v1.3.3
+        uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
         with:
           commit-message: "fix(ci): [autofix.ci] apply automated fixes"

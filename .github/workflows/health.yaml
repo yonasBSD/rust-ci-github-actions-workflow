@@ -38,13 +38,13 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: ${{ env.ALLOWED_ENDPOINTS }}
-      - uses: actions/checkout@v6.0.2
-      - uses: mozilla-actions/sccache-action@v0.0.9
-      - uses: dtolnay/rust-toolchain@v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # v0.0.9
+      - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
         with:
           toolchain: nightly
       - name: Install cargo-binstall
-        uses: cargo-bins/cargo-binstall@v1.17.4
+        uses: cargo-bins/cargo-binstall@ec80feb9e330418e014932e5982599255eff6dbb # v1.17.4
       - name: Install and Run cargo-outdated
         run: |
           cargo binstall -y cargo-outdated
@@ -63,9 +63,9 @@ jobs:
           disable-sudo: true
           egress-policy: block
           allowed-endpoints: ${{ env.ALLOWED_ENDPOINTS }}
-      - uses: actions/checkout@v6.0.2
-      - uses: mozilla-actions/sccache-action@v0.0.9
-      - uses: dtolnay/rust-toolchain@v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: mozilla-actions/sccache-action@7d986dd989559c6ecdb630a3fd2557667be217ad # v0.0.9
+      - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
         with:
           toolchain: nightly
       - name: Check for Unused Dependencies
