@@ -1,10 +1,14 @@
 name: Test with Code Coverage
 
 on:
-  pull_request:
   push:
     branches:
       - main
+      - 'releases/**'
+  pull_request:
+    branches:
+      - main
+      - 'releases/**'
 
 permissions:
   contents: read
@@ -14,6 +18,7 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
+  FEATURE_PATH: ./
 
 jobs:
   test:
@@ -50,15 +55,15 @@ jobs:
             just.systems:443
             taskfile.dev:443
 
-      - uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # nightly
+      - uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9 # v1
         with:
           toolchain: nightly
           components: llvm-tools-preview
 
       - name: Cache dependencies
-        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         env:
           cache-name: cache-dependencies
         with:
@@ -74,7 +79,7 @@ jobs:
       # Cache target directory seperately to prevent cache invalidation of
       # ~/.cargo when target changes
       #- name: Cache target directory
-      #  uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+      #  uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
       #  env:
       #    cache-name: cache-dependencies
       #  with:
@@ -82,12 +87,12 @@ jobs:
       #    key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('Cargo.lock') }}
 
       - name: Install grcov
-        uses: taiki-e/install-action@509565405a8a987e73cf742e26b26dcc72c4b01a # v2.67.26
+        uses: taiki-e/install-action@f176c07a0a40cbfdd08ee9aa8bf1655701d11e69 # v2.67.25
         with:
           tool: grcov,cargo-llvm-cov
 
       - name: Run tests
-        uses: yonasBSD/toolkit@9067fa17c79d97c3bad28da5ebba1d3c32ab3582 # v0.1.0
+        uses: yonasBSD/toolkit@e3156a095eb4a759778ad8ef10dfd58dd00993e6 # v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -95,11 +100,12 @@ jobs:
             task test
 
       - name: Generate test results and coverage report
-        uses: yonasBSD/toolkit@9067fa17c79d97c3bad28da5ebba1d3c32ab3582 # v0.1.0
+        uses: yonasBSD/toolkit@e3156a095eb4a759778ad8ef10dfd58dd00993e6 # v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           run: |
+            cd ${{ env.FEATURE_PATH }}
             cargo test ${CARGO_OPTIONS:+$CARGO_OPTIONS} -- -Z unstable-options --format json | cargo2junit > results.xml;
             cargo llvm-cov --all-features --workspace --codecov --output-path ./codecov.json
 
@@ -109,25 +115,3 @@ jobs:
           check_name: Test Results
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: results.xml
-
-      # FIXME: https://github.com/yonasBSD/rust-ci-github-actions-workflow/issues/85
-      #- name: Run xtask coverage
-      #  uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505 # v1.0.3
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    command: xtask
-      #    args: coverage
-
-      #- name: Upload Coverage Report
-      #  uses: codecov/codecov-action@v5
-      #  with:
-      #    verbose: true
-      #    token: ${{ secrets.CODECOV_TOKEN }}
-      #    files: ${{ github.workspace }}/codecov.json
-
-      #  - name: Upload to codecov.io
-      #    uses: codecov/codecov-action@v5
-      #    with:
-      #      files: coverage/*.lcov
-      #    fail_ci_if_error: true
