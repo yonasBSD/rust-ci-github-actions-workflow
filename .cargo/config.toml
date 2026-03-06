@@ -31,6 +31,13 @@ runner = "wasm-bindgen-test-runner"
 opt-level = 1
 incremental = true
 
+[profile.release]
+opt-level = "z"     # Optimize for size
+lto = true          # Link Time Optimization
+codegen-units = 1   # Maximum optimization for binary speed
+panic = "abort"     # Minimize binary overhead
+strip = true        # Remove symbols for deployment
+
 [env]
 RUST_TEST_THREADS = "1"
 RUST_BACKTRACE = "1"
