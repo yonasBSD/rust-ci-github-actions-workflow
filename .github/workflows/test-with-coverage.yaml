@@ -63,7 +63,7 @@ jobs:
           components: llvm-tools-preview
 
       - name: Cache dependencies
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         env:
           cache-name: cache-dependencies
         with:
@@ -79,7 +79,7 @@ jobs:
       # Cache target directory seperately to prevent cache invalidation of
       # ~/.cargo when target changes
       #- name: Cache target directory
-      #  uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      #  uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       #  env:
       #    cache-name: cache-dependencies
       #  with:
